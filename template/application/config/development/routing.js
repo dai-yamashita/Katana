@@ -8,9 +8,9 @@ module.exports = {
   },
 
   // RegExp routes
-	routes: [
+	routes: {
     // Add your routes here
-  ],
+  },
 
   // 404 requests will be redirected to this controller and action if they exists
   controller_404: 'home',
