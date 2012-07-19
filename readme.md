@@ -66,23 +66,59 @@ Then `controller=account` and `action=login`.
 
 If there no uri segments then default path will be used, `home` as controller and `index` as action.
 
-You can also rewrite this path by set the routing rule, for example:
+You can also rewrite path by set the routing rule, for example to view user profile:
 
-    routes: [
-      ['account/(.*)', 'auth/$1']
-    ]
+    routes: {
+      // each request method may have it's own routes
+      get: [
+        ['user/:user_id', 'users/profile']
+      ]
 
-This will set `controller=auth` and `action=login`.
+      // also you can set routes for all methods
+      all: [
+        // if routes will not match for requested method then will try this routes
+      ]
+    }
+
+This will set `controller=users` and `action=profile` and user_id will be available as `Request.params.user_id`.
 
 Or you may pass this request to mvc module:
 
-    routes: [
-      ['account/(.*)', '#auth/actions/$1']
-    ]
+    routes: {
+      get: [
+        ['user/:user_id', '#auth/users/profile']
+      ]
+    }
 
-The `#` symbol meen that this request will pass to `auth` module, `controller=actions` and `action=login`.
+The `#` symbol meen that this request will pass to `auth` module, `controller=users` and `action=profile`.
+
+You could also set format for user_id like so:
+
+    routes: {
+      get: [
+        ['user/:user_id([0-9]+)', '#auth/users/profile']
+      ]
+    }
 
 `!important:` mvc modules may have their own routing rules.
+
+More examples:
+  
+    ['news/:category/rss.:format(xml|json)?', 'news/rss'] will allow:
+     news/any_category/rss
+     news/any_category/rss.xml
+     news/any_category/rss.json
+
+     and News controller:
+
+     methods: {
+       rss: function(Response, Request) {
+         // Now we can use Request.params.category and Request.params.format
+         var format = Request.params.format || 'xml'; // default xml
+
+         ...
+       }
+     }
 
 ## Modules
 
@@ -135,6 +171,68 @@ A simple controller looks like this:
     module.exports = new Home_Controller;
 
 And now we can access this `index` action by opening http://katana:8000/, without any uri path this will use default controller and action from config which are `home` and `index`. Also we can access them directly by opening http://katana:8000/`home`/ with `index` as default action or http://katana:8000/`home`/`index`.
+
+### Hooks
+
+Due the power of Joose [Method Modifiers](http://joose.github.com/Joose/doc/html/Joose/Manual/MethodModifiers.html) (`before`, `after`, `override` and `around`) we may change the way class methods are called, actions that may happen before or after method call or even modify results that they could return.
+
+For example let's restrict index method only for logged in users:
+
+    Class('Home_Controller', {
+      isa: App.Controller,
+
+      methods: {
+        index: function(Response, Request) {
+          Response.send('Hello World!');
+        }
+      },
+
+      around: {
+        // the same name for the method we want to wrap
+        index: function(method, Response, Request) {
+          var User = Request.user;
+
+          // if the user is not logged in then redirect to login page
+          if (!User.logged_in()) {
+            return Request.redirect('/login');
+          }
+
+          // else wee call original method
+          method(Response, Request);
+        }
+      }
+    });
+
+The `call` modifier allow as to use regular expressions and apply that hook to all methods that matches the condition.
+
+For example let's restrict access for all methods:
+
+    Class('Home_Controller', {
+      isa: App.Controller,
+
+      methods: {
+        index: function(Response, Request) {
+          Response.send('Hello World!');
+        }
+      },
+
+      call: {
+        // use regexp instead of methods name
+        // this will apply to all controller methods calls
+       '.*': function(method, Response, Request) {
+          var User = Request.user;
+
+          // if the user is not logged in then redirect to login page
+          if (!User.logged_in()) {
+            return Request.redirect('/login');
+          }
+
+          // else wee call original method
+          method(Response, Request);
+        }
+      }
+    });
+
 
 ## Models
 
@@ -241,6 +339,7 @@ Few of them are available for middlewares, the others are for bootstrap control 
 For example, `auth` module can listen `request` event to assign a user model for request (see Modules).
 
 Or a `chat` module which need application server to create a socket.io server.
+
     var App = require('katana');
 
     var socket_io = require('socket.io');
