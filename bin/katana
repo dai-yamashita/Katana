@@ -22,7 +22,7 @@ var create = App.command('create [path]')
 	
 	App.confirm('Create application at: '+ path +' ? [Yes|No]: ', function(ok) {
 	  if (ok) {
-		  if (!Path.existsSync(path)) {
+		  if (!Fs.existsSync(path)) {
 			  mkdir.sync(path, 0755);
 		  }
 
@@ -34,7 +34,7 @@ var create = App.command('create [path]')
 				                   path + 'modules', path + 'temp'];
 				
 				empty_paths.forEach(function(p) {
-					if (!Path.existsSync(p)) {
+					if (!Fs.existsSync(p)) {
 					  mkdir.sync(p, 0777);
 				  }
 				});
