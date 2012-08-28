@@ -25,7 +25,7 @@
   "dependencies": {
 	  "mkdirp": "*", "async": "*", "joose": "*", "logme": "*", "formidable": "*",
 	  "ejs": "*", "jinsoku": "*", "crypto": "*", "validator": "*", "underscore": "*", "qs": "*", 
-	  "commander": "*", "mime": "*"
+	  "commander": "*", "mime": "*", "node-static": "*"
   },
   "devDependencies": {
   },
