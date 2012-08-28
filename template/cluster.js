@@ -13,5 +13,5 @@ if (Cluster.isMaster) {
 		Cluster.fork();
 	});
 } else {
-	var App = require('katana');
+	require('katana');
 }

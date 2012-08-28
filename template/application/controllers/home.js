@@ -1,7 +1,3 @@
-var App = global.App;
-
-require('joose');
-
 Class('Home_Controller', {
 	isa: App.Controller,
 	

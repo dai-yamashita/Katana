@@ -1,1 +1,1 @@
-var App = require('katana');
+require('katana');

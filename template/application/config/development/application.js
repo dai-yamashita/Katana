@@ -39,7 +39,7 @@ module.exports = {
 	},
 	
 	multipart: {
-		uploadDir: global.root + 'temp/files',
+		uploadDir: root + 'temp/files',
 		keepExtensions: true,
 		encoding: 'utf-8',
 		
