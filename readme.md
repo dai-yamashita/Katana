@@ -2,6 +2,23 @@
 
 Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.
 
+## Contents
+
+* [Features](#features)
+* [Installation](#installation)
+* [Quick start](#quick-start)
+* [Routing](#routing)
+* [Modules](#models)
+* [Controllers](#controllers)
+  * [Hooks](#hooks)
+* [Models](#models)
+* [Views](#views)
+* [Events](#events)
+* [Sessions](#sessions)
+* [Examples](#examples)
+* [Contributing](#contributing)
+* [License](#license)
+
 ## Features
 
 * Powerful, flexible classical router
