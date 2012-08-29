@@ -8,7 +8,7 @@ Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on sim
 * [Installation](#installation)
 * [Quick start](#quick-start)
 * [Routing](#routing)
-* [Modules](#models)
+* [Modules](#modules)
 * [Controllers](#controllers)
   * [Hooks](#hooks)
 * [Models](#models)
