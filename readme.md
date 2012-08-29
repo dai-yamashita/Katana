@@ -80,6 +80,16 @@ You can also rewrite path by set the routing rule, for example to view user prof
       ]
     }
 
+or you may set request method as route prefix:
+
+
+    routes: [
+      ['get user/:user_id', 'users/profile'], // will route this for get method
+      ['* user/:user_id', 'users/profile'] // all methods
+      ['user/:user_id', 'users/profile'] // if not set then will check all methods
+    ]
+
+
 This will set `controller=users` and `action=profile` and user_id will be available as `Request.params.user_id`.
 
 Or you may pass this request to mvc module:
@@ -135,7 +145,6 @@ Middleware modules can listen specific application events and interact as they n
 
 For example auth module can look like this:
 
-    var App = require('katana'); // or global.App
     var User = App.Model('auth:user'); // get user model of auth module
 
     // listen new request event
@@ -152,10 +161,6 @@ and then in our controller we can access user object as `Request.user`.
 Controllers are almost most important part of any application, they handle incoming requests and send responses.
 
 A simple controller looks like this:
-
-    var App = require('katana');
-    
-    require('joose'); // load Joose, great class system
 
     // define our controller Class
     Class('Home_Controller', {
@@ -227,7 +232,7 @@ For example let's restrict access for all methods:
             return Request.redirect('/login');
           }
 
-          // else wee call original method
+          // else we call original method
           method(Response, Request);
         }
       }
@@ -240,14 +245,12 @@ Katana did not limit the developer to define a model in some way or to use a spe
 
 You can access them like this:<br>
 
-    var App = require('katana'); // or global.App
     var News = App.Model('news'); // get model object
 
 To get a model from module you need to separate module name and model path with colon `:`, for example to get `user` model of `auth` module call: `App.Model('auth:user')`.
 
 Model file can look like this:
 
-    var App = require('katana');
     var Mongoose = App.Store('mongoose'); // get mongoose connection, look at stores config file
     var Schema = require('mongoose').Schema;
 
@@ -265,10 +268,7 @@ Model file can look like this:
 
 To render a view you can use a few methods:
 
-    var App = require('katana');
     var View = App.View;
-
-    require('joose');
 
     Class('Home_Controller', {
       isa: App.Controller,
@@ -297,10 +297,6 @@ To render a view you can use a few methods:
     });
 
 Controllers can also have their global data, which will be passed for the this.render calls:
-
-    var App = require('katana');
-  
-    require('joose');
   
     Class('Home_Controller', {
       isa: App.Controller,
@@ -339,8 +335,6 @@ Few of them are available for middlewares, the others are for bootstrap control 
 For example, `auth` module can listen `request` event to assign a user model for request (see Modules).
 
 Or a `chat` module which need application server to create a socket.io server.
-
-    var App = require('katana');
 
     var socket_io = require('socket.io');
     var io;
