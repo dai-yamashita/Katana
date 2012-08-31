@@ -15,6 +15,7 @@ Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on sim
 * [Views](#views)
 * [Events](#events)
 * [Sessions](#sessions)
+* [Logging](#logging)
 * [Examples](#examples)
 * [Contributing](#contributing)
 * [License](#license)
@@ -427,6 +428,11 @@ Example counter of user requests:
       // Also will save session id in the cookie with key_name from config
       Response.send('You have visited this page '+ counter +' times');
     }
+
+## Logging
+
+Katana uses [winston](https://github.com/flatiron/winston) module to log.
+Available as `App.Log` you could add more transports or options to it. Check official docs for this.
 
 ## Examples
 
