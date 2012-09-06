@@ -445,31 +445,3 @@ Anyone interested or who like the framework idea can contribute by sending new i
 The MIT License
 
 Copyright © 2012 D.G. Shogun <Shogun147@gmail.com>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

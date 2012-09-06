@@ -18,45 +18,45 @@ App.version('0.1.0');
 var create = App.command('create [path]')
 .description('Create default application structure and base configuration')
 .action(function(path) {
-	path = path ? Path.resolve(root, path) + '/' : root;
-	
-	App.confirm('Create application at: '+ path +' ? [Yes|No]: ', function(ok) {
-	  if (ok) {
-		  if (!Fs.existsSync(path)) {
-			  mkdir.sync(path, 0755);
-		  }
+  path = path ? Path.resolve(root, path) + '/' : root;
 
-		  copy(mod_root + 'template', path, function(error) {
-				console.log(error ? error : 'Done!');
-				
-				var empty_paths = [path + 'application/config/production', path + 'application/models',
-				                   path + 'public/images', path + 'public/scripts', path + 'public/styles',
-				                   path + 'modules', path + 'temp'];
-				
-				empty_paths.forEach(function(p) {
-					if (!Fs.existsSync(p)) {
-					  mkdir.sync(p, 0777);
-				  }
-				});
-				
-				var pack = {
-					name: 'application-name',
-					version: '0.0.1',
-					private: true,
-					dependencies: {
-						katana: version,
-						joose: '*'
-					}
-				};
-				
-				Fs.writeFileSync(path + 'package.json', JSON.stringify(pack));
-				
-				process.stdin.destroy();
-			});
-	  } else {
-		  process.stdin.destroy();
+  App.confirm('Create application at: '+ path +' ? [Yes|No]: ', function(ok) {
+    if (ok) {
+	  if (!Fs.existsSync(path)) {
+		mkdir.sync(path, 0755);
 	  }
-	});
+
+	  copy(mod_root + 'template', path, function(error) {
+		console.log(error ? error : 'Done!');
+				
+		var empty_paths = [path + 'application/config/production', path + 'application/models',
+		                   path + 'public/images', path + 'public/scripts', path + 'public/styles',
+		                   path + 'modules', path + 'temp'];
+		
+		empty_paths.forEach(function(p) {
+		  if (!Fs.existsSync(p)) {
+		    mkdir.sync(p, 0777);
+		  }
+		});
+		
+		var pack = {
+		  name: 'application-name',
+		  version: '0.0.1',
+		  private: true,
+		  dependencies: {
+		    katana: version,
+		    joose: '*'
+		  }
+	    };
+	
+	    Fs.writeFileSync(path + 'package.json', JSON.stringify(pack));
+				
+	    process.stdin.destroy();
+      });
+    } else {
+      process.stdin.destroy();
+    }
+  });
 });
 
 App.command('install <module>')
@@ -75,34 +75,3 @@ App.command('install <module>')
 });
 
 App.parse(process.argv);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

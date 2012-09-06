@@ -1,6 +1,6 @@
 module.exports = {
-	// Default routing
-	route: {
+  // Default routing
+  route: {
     directory: '',
     controller: 'home',
     action: 'index',
@@ -8,7 +8,7 @@ module.exports = {
   },
 
   // RegExp routes
-	routes: {
+  routes: {
     // Add your routes here
   },
 
