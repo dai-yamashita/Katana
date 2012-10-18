@@ -23,9 +23,9 @@
   },
 
   "dependencies": {
-	  "mkdirp": "*", "async": "*", "joose": "*", "formidable": "*",
+	  "mkdirp": "*", "async": "*", "joose": "*", "formidable": "*", "semver": "*",
 	  "ejs": "*", "jinsoku": "*", "crypto": "*", "validator": "*", "underscore": "*", "qs": "*", 
-	  "commander": "*", "node-static": "*", "winston": "*"
+	  "commander": "*", "node-static": "*", "winston": "*", "request": "*", "colors": "*", "tar": "*"
   },
   "devDependencies": {
   },

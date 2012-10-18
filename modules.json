@@ -8,13 +8,11 @@
 	  "url": "https://github.com/Shogun147"
 	},
 
-	"tags": {
-	  "0.1.0": {
-		"url": "https://github.com/Shogun147/Katana-auth/tarball/v0.1.0",
-		"dependencies": {
-		  "mailer": "0.1.0"
-		}
-	  }
-	}
+    "github": {
+      "username": "Shogun147",
+      "repository": "Katana-auth"
+    },
+
+    "tags": ["0.1.0"]
   }
 }
