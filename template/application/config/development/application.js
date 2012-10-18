@@ -56,7 +56,5 @@ module.exports = {
 	max_age: 0,
 	hiddens: false,
 	get_only: true
-  },
-	
-  modules: []
+  }
 }
