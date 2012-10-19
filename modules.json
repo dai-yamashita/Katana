@@ -1,6 +1,6 @@
 {
   "auth": {
-	"description": "Base authorization and authentication module with roles and rights",
+	"description": "Basic authorization and authentication module with roles and rights",
 	
 	"author": {
 	  "name": "Shogun147",
