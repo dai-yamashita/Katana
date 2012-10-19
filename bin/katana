@@ -323,6 +323,7 @@ App.command('modules-install <name> [url]')
           if (error || !items.length) { return Err('Error: '+ (error ? '\n'+error : 'module extracting failed!')); }
     
           var tmp = items[0];
+          var is_file = false;
 
           Fs.readdir(root +'temp/modules/'+ name +'/'+ tmp, function(error, items) {
             var pending = items.length;
@@ -331,6 +332,8 @@ App.command('modules-install <name> [url]')
               function(callback) {
                 if (pending === 1) {
                   var item = items[0];
+
+                  is_file = true;
 
                   copy(root +'temp/modules/'+ name +'/'+ tmp +'/'+ item, root +'modules/'+ item, function(error) {
                     callback(error);
@@ -356,6 +359,8 @@ App.command('modules-install <name> [url]')
                 }
               },
               function(callback) {
+                if (is_file) { return callback(); }
+
                 Fs.readdir(root +'modules/'+ name +'/hooks', function(error, hooks) {
                   if (error) { return callback(); }
 
