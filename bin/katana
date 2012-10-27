@@ -256,7 +256,7 @@ App.command('modules-install <name> [url]')
       }
     }
 
-    url = 'https://github.com/'+ username +'/'+ repository +'/tarball/'+ (version ? 'v'+version : 'master');
+    url = 'https://github.com/'+ username +'/'+ repository +'/tarball/'+ (version || 'master');
   }
 
   check_installed(name, function(ok, exists) {
@@ -277,7 +277,7 @@ App.command('modules-install <name> [url]')
         version = module.tags.pop();
       }
 
-      url = module.url ? module.url + (version ? 'v'+version : 'master') : 'https://github.com/'+ module.github.username +'/'+ module.github.repository +'/tarball/'+ (version ? 'v'+version : 'master');
+      url = module.url ? module.url + (version || 'master') : 'https://github.com/'+ module.github.username +'/'+ module.github.repository +'/tarball/'+ (version || 'master');
     }
 
     console.log('    name: ', name);
