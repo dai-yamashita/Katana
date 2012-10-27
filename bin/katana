@@ -347,16 +347,19 @@ App.command('modules-install <name> [url]')
                         if (error) { console.log(error); }
 
                         if (!--pending) {
-                          remove(root +'temp/modules/'+ name, function(error) {
-                            if (error) { console.log('Warning:'.magento, 'could not remove temporary directory.'); }
-
-                            callback();
-                          });
+                          callback();
                         }
                       });
                     });
                   });
                 }
+              },
+              function(callback) {
+                remove(root +'temp/modules/'+ name, function(error) {
+                  if (error) { console.log('Warning:'.magento, 'could not remove temporary directory.'); }
+
+                  callback();
+                });
               },
               function(callback) {
                 if (is_file) { return callback(); }
