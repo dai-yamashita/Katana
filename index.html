@@ -3,50 +3,32 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
     <title>Katana by Shogun147</title>
   </head>
 
   <body>
-    <a id="forkme_banner" href="https://github.com/Shogun147/Katana">View on GitHub</a>
-    <div class="shell">
+    <header>
+      <div class="inner">
+        <h1>Katana</h1>
+        <h2>Easy to use, hmvc scalable web framework for any Node.js samurai</h2>
+        <a href="https://github.com/Shogun147/Katana" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Katana</h1>
-            <h2>Easy to use, hmvc scalable web framework for any Node.js samurai</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/Shogun147/Katana/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/Shogun147/Katana/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h1><a href="https://github.com/Shogun147/Katana">Katana</a></h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1><a href="https://github.com/Shogun147/Katana">Katana</a></h1>
 
 <p>Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.</p>
 
@@ -236,6 +218,52 @@ App.on('request', function(Request, Response, callback) {
 </code></pre>
 
 <p>and then in our controller we can access user object as <code>Request.user</code>.</p>
+
+<h3>Sharing modules</h3>
+
+<p><a href="https://github.com/Shogun147/Katana">Katana</a> comes with an basic modules sharing system which allow to download public modules and install them for application.</p>
+
+<p>Katana binary has few new commands for interacting with modules:</p>
+
+<ul>
+<li>
+<code>katana modules</code> - list all available modules.</li>
+<li>
+<code>katana modules-search &lt;str&gt;</code> - search modules that contain <code>str</code> in name or description.</li>
+<li>
+<code>katana modules-update</code> - update modules list and their info.</li>
+<li>
+<p><code>katana modules-install &lt;name&gt; [url]</code> - install or reinstall app module.</p>
+
+<ul>
+<li>
+<code>name</code> or <code>name@version</code> - module name</li>
+<li>
+<code>url</code> or <code>username:repository</code> or <code>username:repository@version</code> - optional url or github username:repository combination.</li>
+</ul>
+<p>If only <code>name</code> is provided then download url will be builded from module data contained in modules registry file. The name could also be followed by an version tag.<br>
+If second argument is an url then module will be downloaded from that url.<br>
+If second argument is an combination of <code>username:repository@version</code> then the url will be: <code>https://github.com/:username/:repository/tarball/:version</code>.<br>
+If no <code>version</code> provided then requested one will be last available version for module in registry. If no valid version will be detected then <code>master</code> brunch will be requested.<br>
+For custom download url modules still must be gzipped tarballs.<br>
+Examples of install:</p>
+
+<ul>
+<li><code>katana modules-install auth</code></li>
+<li><code>katana modules-install auth@0.1.0</code></li>
+<li><code>katana modules-install Shogun147:Katana-auth</code></li>
+<li><code>katana modules-install Shogun147:Katana-auth@0.1.0</code></li>
+<li><code>katana modules-install https://github.com/Shogun147/Katana-auth/tarball/master</code></li>
+<li><code>katana modules-install http://my-site.com/downloads/module/v1.0.5</code></li>
+</ul>
+</li>
+<li><p><code>katana modules-uninstall &lt;name&gt;</code> - uninstall and remove module</p></li>
+<li><p><code>katana modules-enable &lt;name&gt;</code> - enable module</p></li>
+<li><p><code>katana modules-disable &lt;name&gt;</code> - disable module</p></li>
+</ul><p>For each of this actions [<code>install</code>, <code>uninstall</code>, <code>enable</code>, <code>disable</code>] modules could have their hooks which would be called. The hooks are stored in hooks directory of module.<br>
+The hooks are useful when there is a need to do something unique on this actions. For ex the <code>install</code> hook (modules/:name/hooks/install.js) could create new tables in the database or copy modules assets to public directory…</p>
+
+<p>The module registry is downloaded from <code>https://raw.github.com/Shogun147/Katana/master/modules.json</code>. To add new modules to the list just fork this file and send an pull request. This will make your module listed on <code>katana modules</code> command and on search.</p>
 
 <h2>Controllers</h2>
 
@@ -520,23 +548,26 @@ Available as <code>App.Log</code> you could add more transports or options to it
 <p>The MIT License</p>
 
 <p>Copyright © 2012 D.G. Shogun <a href="mailto:Shogun147@gmail.com">Shogun147@gmail.com</a></p>
-      </section>
+        </section>
 
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/Shogun147">Shogun147</a> can be found on <a href="https://github.com/Shogun147/Katana">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
+        <aside id="sidebar">
+          <a href="https://github.com/Shogun147/Katana/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Shogun147/Katana/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
+          <p class="repo-owner"><a href="https://github.com/Shogun147/Katana"></a> is maintained by <a href="https://github.com/Shogun147">Shogun147</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
 
-              <script type="text/javascript">
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
