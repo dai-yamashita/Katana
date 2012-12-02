@@ -181,9 +181,9 @@ and then in our controller we can access user object as `Request.user`.
 Katana binary has few new commands for interacting with modules:
 
 * `katana modules` - list all available modules.
-* `katana modules-search <str>` - search modules that contain `str` in name or description.
-* `katana modules-update` - update modules list and their info.
-* `katana modules-install <name> [url]` - install or reinstall app module.
+* `katana module search <str>` - search modules that contain `str` in name or description.
+* `katana module update` - update modules list and their info.
+* `katana module install <name> [url]` - install or reinstall app module.
   * `name` or `name@version` - module name
   * `url` or `username:repository` or `username:repository@version` - optional url or github username:repository combination.
 
@@ -193,16 +193,16 @@ Katana binary has few new commands for interacting with modules:
   If no `version` provided then requested one will be last available version for module in registry. If no valid version will be detected then `master` brunch will be requested.<br>
   For custom download url modules still must be gzipped tarballs.<br>
   Examples of install:
-    * `katana modules-install auth`
-    * `katana modules-install auth@0.1.0`
-    * `katana modules-install Shogun147:Katana-auth`
-    * `katana modules-install Shogun147:Katana-auth@0.1.0`
-    * `katana modules-install https://github.com/Shogun147/Katana-auth/tarball/master`
-    * `katana modules-install http://my-site.com/downloads/module/v1.0.5`
+    * `katana module install auth`
+    * `katana module install auth@0.1.0`
+    * `katana module install Shogun147:Katana-auth`
+    * `katana module install Shogun147:Katana-auth@0.1.0`
+    * `katana module install https://github.com/Shogun147/Katana-auth/tarball/master`
+    * `katana module install http://my-site.com/downloads/module/v1.0.5`
 
-* `katana modules-uninstall <name>` - uninstall and remove module
-* `katana modules-enable <name>` - enable module
-* `katana modules-disable <name>` - disable module
+* `katana module uninstall <name>` - uninstall and remove module
+* `katana module enable <name>` - enable module
+* `katana module disable <name>` - disable module
 
 For each of this actions [`install`, `uninstall`, `enable`, `disable`] modules could have their hooks which would be called. The hooks are stored in hooks directory of module.<br>
 The hooks are useful when there is a need to do something unique on this actions. For ex the `install` hook (modules/:name/hooks/install.js) could create new tables in the database or copy modules assets to public directory…
