@@ -1,6 +1,6 @@
 # [Katana](https://github.com/Shogun147/Katana) 
 
-Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.
+Easy to use, modular web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.
 
 ## Contents
 
