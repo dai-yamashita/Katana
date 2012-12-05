@@ -65,7 +65,7 @@ App.command('create [path]')
           path + 'public/scripts', 
           path + 'public/styles',
           path + 'modules', 
-          path + 'temp'
+          path + 'temp/files'
         ];
 
         Async.forEach(paths, function(path, cb) {
