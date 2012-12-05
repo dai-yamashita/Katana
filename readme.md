@@ -183,7 +183,6 @@ MVCモジュールの場合は、メインMVCのと同じようにルーティ�
 
 Katanaバイナリがモジュールと対話するためにいくつかの新しいコマンドがあります。
 
-<<<<<<< HEAD
 * `katana modules` - 使用可能なすべてのモジュールを一覧表示。
 * `katana modules-search <str>` - 'str' を含むモジュール名または記述を検索します。
 * `katana modules-update` - モジュールのリストの関連情報を更新します。
@@ -196,41 +195,22 @@ Katanaバイナリがモジュールと対話するためにいくつかの新�
   `version` がない場合は、要求されたものは、レジストリ内のモジュールに対して使用可能な最後のバージョンになるでしょう。有効なバージョンが次に検出されない場合の `master` ブランチが要求されます。<br>
   カスタムダウンロードURLモジュールの場合はgzipで圧縮されたtarballまだなければなりません。<br>
   インストール例:
-    * `katana modules-install auth`
-    * `katana modules-install auth@0.1.0`
-    * `katana modules-install Shogun147:Katana-auth`
-    * `katana modules-install Shogun147:Katana-auth@0.1.0`
-    * `katana modules-install https://github.com/Shogun147/Katana-auth/tarball/master`
-    * `katana modules-install http://my-site.com/downloads/module/v1.0.5`
+    * `katana modules install auth`
+    * `katana modules install auth@0.1.0`
+    * `katana modules install Shogun147:Katana-auth`
+    * `katana modules install Shogun147:Katana-auth@0.1.0`
+    * `katana modules install https://github.com/Shogun147/Katana-auth/tarball/master`
+    * `katana modules install http://my-site.com/downloads/module/v1.0.5`
 
-* `katana modules-uninstall <name>` - モジュールをアンインストールし削除する
-* `katana modules-enable <name>` - モジュールを有効にする
-* `katana modules-disable <name>` - モジュールを無効にする
-=======
+* `katana modules uninstall <name>` - モジュールをアンインストールし削除する
+* `katana modules enable <name>` - モジュールを有効にする
+* `katana modules disable <name>` - モジュールを無効にする
 * `katana modules` - list all available modules.
 * `katana module search <str>` - search modules that contain `str` in name or description.
 * `katana module update` - update modules list and their info.
 * `katana module install <name> [url]` - install or reinstall app module.
   * `name` or `name@version` - module name
   * `url` or `username:repository` or `username:repository@version` - optional url or github username:repository combination.
-
-  If only `name` is provided then download url will be builded from module data contained in modules registry file. The name could also be followed by an version tag.<br>
-  If second argument is an url then module will be downloaded from that url.<br>
-  If second argument is an combination of `username:repository@version` then the url will be: `https://github.com/:username/:repository/tarball/:version`.<br>
-  If no `version` provided then requested one will be last available version for module in registry. If no valid version will be detected then `master` brunch will be requested.<br>
-  For custom download url modules still must be gzipped tarballs.<br>
-  Examples of install:
-    * `katana module install auth`
-    * `katana module install auth@0.1.0`
-    * `katana module install Shogun147:Katana-auth`
-    * `katana module install Shogun147:Katana-auth@0.1.0`
-    * `katana module install https://github.com/Shogun147/Katana-auth/tarball/master`
-    * `katana module install http://my-site.com/downloads/module/v1.0.5`
-
-* `katana module uninstall <name>` - uninstall and remove module
-* `katana module enable <name>` - enable module
-* `katana module disable <name>` - disable module
->>>>>>> d02e9a07877de94cf3a3fb4dc1d91f0f7d8f4379
 
 このアクション [`install`, `uninstall`, `enable`, `disable`] のそれぞれに対してモジュールが呼びだされ、それらはhookを持っている可能性があります。hookは、モジュールのhooksディレクトリに格納されています。<br>
 hookはこのアクションにユニークな何かをする必要があるときに便利です。 例えば、 `install` (modules/:name/hooks/install.js) hookは、publicディレクトリにデータベースまたはコピーモジュール資産の新しいテーブルを作成することができます...
