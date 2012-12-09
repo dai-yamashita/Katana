@@ -395,7 +395,13 @@ App.command('uninstall <name>')
   run_hook('uninstall', module, function(error) {
     if (error) { return Err(error); }
 
-    remove(root +'modules/'+ module, function(error) {
+    var path = root +'modules/'+ module;
+
+    if (Fs.existsSync(path +'.js')) {
+      path += '.js';
+    }
+
+    remove(path, function(error) {
       if (error) { return Err(error); }
 
       var pack = require(root +'package.json');
