@@ -323,7 +323,7 @@ App.command('install <name> [url]')
               }
 
               Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
-                console.log('\nModule "'+ name +'" now installed! Run "katana modules-enabled '+ name +'" to enable it.');
+                console.log('\nModule "'+ name +'" now installed! Run "katana module enable '+ name +'" to enable it.');
 
                 process.exit();
               });
