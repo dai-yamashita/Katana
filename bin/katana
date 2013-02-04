@@ -9,7 +9,7 @@ var spawn = require('child_process').spawn;
 var App = require('commander');
 
 App.version(require(mod_root + 'package').version);
-App.usage('<command> [options]');
+App.usage('katana <command> [options]');
 
 App.on('--help', function() {
   console.log('  Commands:'+ eol);
