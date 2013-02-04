@@ -1,10 +1,7 @@
 # [Katana](https://github.com/Shogun147/Katana) 
 
-<<<<<<< HEAD
 使いやすい、Node.jsの侍たちの為のHMVCスケーラブルなWEBフレームワーク
 =======
-Easy to use, modular web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.
->>>>>>> 758dd6728fd7efc5be2da32953381c90fb6618cf
 
 ## コンテンツ
 
