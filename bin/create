@@ -85,7 +85,8 @@ App.command('create [path]')
           private: true,
           dependencies: {
             katana: info.version,
-            joose: '*'
+            joose: '*',
+            ejs: '*'
           },
           katana: {
             modules: {}
