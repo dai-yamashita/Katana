@@ -36,21 +36,27 @@
 
 Katanaを最も早く使うには、npmでインストールすることです。
 
-    $ npm install -g katana
+```bash
+$ npm install -g katana
+```
 
 ## Quick start
 
 最も簡単に開始する方法は、アプリケーションを生成するKatana利用して実行することです。
 
-    $ katana create app
-    $ cd app
-    $ npm install
+```bash
+$ katana create app
+$ cd app
+$ npm install
+```
 
 アプリのパスはオプションであり、現在のパスからの相対パスです。
 
 これで、サーバを起動する準備が整いました。
 
-    $ node app
+```bash
+$ node app
+```
 
 ### 作成後の基本的なアプリケーションのレイアウトは次のようになります。
     .
@@ -87,26 +93,30 @@ URIセグメントがない場合、デフォルトパスは、`home`コント�
 
 また、ユーザー·プロファイルを表示するような場合、ルーティングルールを設定することによって、パスを書き換えることができます。
 
-    routes: {
-      // 各リクエストメソッドは自身のルート（経路）があります。
-      get: [
-        ['user/:user_id', 'users/profile']
-      ]
+```javascript
+routes: {
+  // 各リクエストメソッドは自身のルート（経路）があります。
+  get: [
+    ['user/:user_id', 'users/profile']
+  ]
 
-      // すべてのメソッドのためのルート（経路）を設定することもできます。
-      all: [
-        // リクエストされたメソッドをルート（経路）が一致しない場合は、このルートをしようとします
-      ]
-    }
+  // すべてのメソッドのためのルート（経路）を設定することもできます。
+  all: [
+    // リクエストされたメソッドをルート（経路）が一致しない場合は、このルートをしようとします
+  ]
+}
+```
 
 または、ルートプレフィックスとしてリクエストメソッドを設定できます：
 
 
-    routes: [
-      ['get user/:user_id', 'users/profile'], // これは get メソッドをルーティングします。
-      ['* user/:user_id', 'users/profile'] // すべてのメソッド
-      ['user/:user_id', 'users/profile'] // 設定されていない場合は、すべてのメソッドをチェックします
-    ]
+```javascript
+routes: [
+  ['get user/:user_id', 'users/profile'], // これは get メソッドをルーティングします。
+  ['* user/:user_id', 'users/profile'] // すべてのメソッド
+  ['user/:user_id', 'users/profile'] // 設定されていない場合は、すべてのメソッドをチェックします
+]
+```
 
 
 これは、`controller=users` と
@@ -114,42 +124,48 @@ URIセグメントがない場合、デフォルトパスは、`home`コント�
 
 または、MVCモジュールにこのリクエストを渡すことができます：
 
-    routes: {
-      get: [
-        ['user/:user_id', '#auth/users/profile']
-      ]
-    }
+```javascript
+routes: {
+  get: [
+    ['user/:user_id', '#auth/users/profile']
+  ]
+}
+```
 
 このリクエストは、`auth`モジュール、`controller=users` と
 `action=profile`をパスする`＃`シンボルを意味します。
 
 また、次のようuser_idの書式を設定することができます：
 
-    routes: {
-      get: [
-        ['user/:user_id([0-9]+)', '#auth/users/profile']
-      ]
-    }
+```javascript
+routes: {
+  get: [
+    ['user/:user_id([0-9]+)', '#auth/users/profile']
+  ]
+}
+```
 
 `!重要:` MVCモジュールは、独自のルーティングルールを持っているかもしれません。
 
 その他の例：
   
-    ['news/:category/rss.:format(xml|json)?', 'news/rss'] will allow:
-     news/any_category/rss
-     news/any_category/rss.xml
-     news/any_category/rss.json
+```javascript
+['news/:category/rss.:format(xml|json)?', 'news/rss'] will allow:
+ news/any_category/rss
+ news/any_category/rss.xml
+ news/any_category/rss.json
 
-     and News controller:
+ and News controller:
 
-     methods: {
-       rss: function(Response, Request) {
-         // 今、Request.params.categoryとRequest.params.formatを使用することができます
-         var format = Request.params.format || 'xml'; // default xml
+ methods: {
+   rss: function(Response, Request) {
+     // 今、Request.params.categoryとRequest.params.formatを使用することができます
+     var format = Request.params.format || 'xml'; // default xml
 
-         ...
-       }
-     }
+     ...
+   }
+ }
+```
 
 ## Modules
 
@@ -158,7 +174,9 @@ Katanaでは、モジュールはMVCの一部のアプリケーションとし�
 MVCモジュールの場合は、メインMVCのと同じようにルーティングを使用することができます。<br>
 また、runメソッドを呼び出すことにより、ウィジェットとしてそれらを実行することができます：
 
-    Module('auth').run('users/list');
+```javascript
+Module('auth').run('users/list');
+```
 
 これは、`auth`モジュールから`users`コントローラの`list`アクションを実行します。
 
@@ -166,14 +184,16 @@ MVCモジュールの場合は、メインMVCのと同じようにルーティ�
 
 例えばauthモジュールは次のようになります。
 
-    var User = App.Model('auth:user'); // authモジュールのuserモデルを取得
+```javascript
+var User = App.Model('auth:user'); // authモジュールのuserモデルを取得
 
-    // listen new request event
-    App.on('request', function(Request, Response, callback) {
-      Request.user = new User(Request.session);
+// listen new request event
+App.on('request', function(Request, Response, callback) {
+  Request.user = new User(Request.session);
 
-      callback(); // アプリケーションが続行に必要な作業が終わったときのコールバック
-    });
+  callback(); // アプリケーションが続行に必要な作業が終わったときのコールバック
+});
+```
 
 その後コントローラからユーザーオブジェクト 'Request.user' としてアクセスできます。
 
@@ -226,18 +246,20 @@ hookはこのアクションにユニークな何かをする必要があると�
 
 シンプルなコントローラは次のようになります。
 
-    // 独自のコントローラクラスを定義する
-    Class('Home_Controller', {
-      isa: App.Controller, // Katanaコアコントローラを拡張
+```javascript
+// 独自のコントローラクラスを定義する
+Class('Home_Controller', {
+  isa: App.Controller, // Katanaコアコントローラを拡張
 
-      methods: {
-        index: function(Response, Request) {
-          Response.send('Hello World!');
-        }
-      }
-    });
+  methods: {
+    index: function(Response, Request) {
+      Response.send('Hello World!');
+    }
+  }
+});
 
-    module.exports = new Home_Controller;
+module.exports = new Home_Controller;
+```
 
 http://katana:8000/を開くことにより、この`index`アクションにアクセスすることができます。任意のURIパスがないので、
 configのdefaultのコントローラの`home`とアクション`index`を使用します。また直接
@@ -253,60 +275,64 @@ Modifiers(メソッド修飾子)]の力で(http://joose.github.com/Joose/doc/htm
 
 例えばindexメソッドはログインユーザーのみという制限をしましょう：
 
-    Class('Home_Controller', {
-      isa: App.Controller,
+```javascript
+Class('Home_Controller', {
+  isa: App.Controller,
 
-      methods: {
-        index: function(Response, Request) {
-          Response.send('Hello World!');
-        }
-      },
+  methods: {
+    index: function(Response, Request) {
+      Response.send('Hello World!');
+    }
+  },
 
-      around: {
-        // ラップしたいメソッドと同名
-        index: function(method, Response, Request) {
-          var User = Request.user;
+  around: {
+    // ラップしたいメソッドと同名
+    index: function(method, Response, Request) {
+      var User = Request.user;
 
-          // ユーザがログインしていない場合、次のログインページにリダイレクト
-          if (!User.logged_in()) {
-            return Request.redirect('/login');
-          }
-
-          // 他に、元のメソッドを呼び出す
-          method(Response, Request);
-        }
+      // ユーザがログインしていない場合、次のログインページにリダイレクト
+      if (!User.logged_in()) {
+        return Request.redirect('/login');
       }
-    });
+
+      // 他に、元のメソッドを呼び出す
+      method(Response, Request);
+    }
+  }
+});
+```
 
 `call`修飾子は、正規表現を使用してフック条件に一致するすべてのメソッドに適用することができます。
 
 例えば、すべてのメソッドに対してアクセスを制限しましょう：
 
-    Class('Home_Controller', {
-      isa: App.Controller,
+```javascript
+Class('Home_Controller', {
+  isa: App.Controller,
 
-      methods: {
-        index: function(Response, Request) {
-          Response.send('Hello World!');
-        }
-      },
+  methods: {
+    index: function(Response, Request) {
+      Response.send('Hello World!');
+    }
+  },
 
-      call: {
-        // メソッド名の代わりに正規表現を使う
-        // これは、すべてのコントローラのメソッド呼び出しに適用されます
-       '.*': function(method, Response, Request) {
-          var User = Request.user;
+  call: {
+    // メソッド名の代わりに正規表現を使う
+    // これは、すべてのコントローラのメソッド呼び出しに適用されます
+   '.*': function(method, Response, Request) {
+      var User = Request.user;
 
-          // ユーザがログインしていない場合、次のログインページにリダイレクト
-          if (!User.logged_in()) {
-            return Request.redirect('/login');
-          }
-
-          // 他に、元のメソッドを呼び出す
-          method(Response, Request);
-        }
+      // ユーザがログインしていない場合、次のログインページにリダイレクト
+      if (!User.logged_in()) {
+        return Request.redirect('/login');
       }
-    });
+
+      // 他に、元のメソッドを呼び出す
+      method(Response, Request);
+    }
+  }
+});
+```
 
 
 ## Models
@@ -323,81 +349,87 @@ Katanaは何らかの方法でモデルを定義する場合や、特定のモ�
 
 モデルファイルは次のようになります：
 
-    var Mongoose = App.Store('mongoose'); // 格納されている設定ファイルを見て、mongooseの接続を取得
-    var Schema = require('mongoose').Schema;
+```javascript
+var Mongoose = App.Store('mongoose'); // 格納されている設定ファイルを見て、mongooseの接続を取得
+var Schema = require('mongoose').Schema;
 
-    var User = new Schema({
-      username: String,
-      password: String,
-      email: String,
-      signed_at: Date,
-      roles: ['user', 'moderator', 'administrator']
-    });
+var User = new Schema({
+  username: String,
+  password: String,
+  email: String,
+  signed_at: Date,
+  roles: ['user', 'moderator', 'administrator']
+});
 
-    module.exports = Mongoose.model('User', User);
+module.exports = Mongoose.model('User', User);
+```
 
 ## Views
 
 viewをレンダリングするには、いくつかの方法を使用できます。
 
-    var View = App.View;
+```javascript
+var View = App.View;
 
-    Class('Home_Controller', {
-      isa: App.Controller,
+Class('Home_Controller', {
+  isa: App.Controller,
 
-      methods: {
-        index: function(Response, Request) {
-          // 直接viewのコンテンツをレンダリングして送信
-          Response.render('index', { title: 'Hello World' }); // this will render index.html file from views
+  methods: {
+    index: function(Response, Request) {
+      // 直接viewのコンテンツをレンダリングして送信
+      Response.render('index', { title: 'Hello World' }); // this will render index.html file from views
 
-          // コンテンツをレンダリング
-          var content = View.render('index', { title: 'Hello World' });
-          // その後、レスポンスを送信
-          Response.send(content);
+      // コンテンツをレンダリング
+      var content = View.render('index', { title: 'Hello World' });
+      // その後、レスポンスを送信
+      Response.send(content);
 
-          // モジュールからviewをレンダリング
-          Users.find({}, function(error, users) {
-            if (error) { return Response.send('Error! Blablabla'); }
+      // モジュールからviewをレンダリング
+      Users.find({}, function(error, users) {
+        if (error) { return Response.send('Error! Blablabla'); }
 
-            // もう一度viewでモジュール名はパスとコロンで区切られる
-            var list = View.render('auth:list', users);
+        // もう一度viewでモジュール名はパスとコロンで区切られる
+        var list = View.render('auth:list', users);
 
-            Response.render('index', { users: list });
-          });
-        }
-      }
-    });
+        Response.render('index', { users: list });
+      });
+    }
+  }
+});
+```
 
 コントローラもthis.renderの呼び出しに渡されるグローバルデータを持つことができます：
   
-    Class('Home_Controller', {
-      isa: App.Controller,
+```javascript
+Class('Home_Controller', {
+  isa: App.Controller,
+
+  have: {
+    // グローバルデータをコントローラに設定
+    data: {
+      title: 'This is title for all pages for this controller',
+      total_requests: 0
+    }
+  },
+
+  methods: {
+    index: function(Response) {
+      // アクションからグローバルデータをコントローラーに設定することもできます。
+      this.set('copyright', 'blablabla');
+      // または
+      this.data.total_requests++;
     
-      have: {
-        // グローバルデータをコントローラに設定
-        data: {
-          title: 'This is title for all pages for this controller',
-          total_requests: 0
-        }
-      },
+      // this.renderメソッドを使用してビューをレンダリングすることにより、コントローラのデータは、このビューに渡します
+      var content = this.render('index'); // <?-title?>, <?-total_requests?>
     
-      methods: {
-        index: function(Response) {
-          // アクションからグローバルデータをコントローラーに設定することもできます。
-          this.set('copyright', 'blablabla');
-          // または
-          this.data.total_requests++;
-        
-          // this.renderメソッドを使用してビューをレンダリングすることにより、コントローラのデータは、このビューに渡します
-          var content = this.render('index'); // <?-title?>, <?-total_requests?>
-        
-          // また、レンダリングにそれらを設定することによって、グローバルを書き換える場合があります
-          var content = this.render('index', { title: 'This is rewritted title', foo: 'bar' });
-        
-          Response.send(content);
-        }
-      }
-    });
+      // また、レンダリングにそれらを設定することによって、グローバルを書き換える場合があります
+      var content = this.render('index', { title: 'This is rewritted title', foo: 'bar' });
+    
+      Response.send(content);
+    }
+  }
+});
+```
 
 ## Events
 
@@ -407,19 +439,21 @@ Katanaアプリケーションは、特定のイベントを別の手順でし�
 
 または、アプリケーションサーバで`chat`モジュール作成する場合、socket.ioサーバを必要になります。
 
-    var socket_io = require('socket.io');
-    var io;
+```javascript
+var socket_io = require('socket.io');
+var io;
 
-    // Http.Serverがリスニング開始準備ができたらイベントを発行します
-    App.on('ready', function(callback) {
-	  io = socket_io.listen(App.server);
-	
-	  io.sockets.on('connection', function (socket) {
-	    // …
-	  });
-	
-	  callback();
-    });
+// Http.Serverがリスニング開始準備ができたらイベントを発行します
+App.on('ready', function(callback) {
+      io = socket_io.listen(App.server);
+    
+      io.sockets.on('connection', function (socket) {
+        // …
+      });
+    
+      callback();
+});
+```
 
 ## Sessions
 
@@ -438,27 +472,29 @@ Katanaはセッションをサポートするためのモジュールで構築�
 
 まずアプリケーション構成ファイルにセッションを有効にする必要があります。 デフォルトのセッションは、次のようになります。
 
-    session: {
-      // セッションのサポートを有効または無効にする
-		  enabled: true,
-		
-		  // cookieのセッション識別子名
-		  key_name: 'session_id',
-		
-		  // セッションIDの長さ
-		  key_length: 32,
-		
-		  // 非アクティブなセッションを削除する前の有効期間
-		  lifetime: 1000 * 60 * 60 * 24 * 7,
-		
-		  // セッションストアは,１つの config/stores.js から
-		  store: 'redis',
-		
-      // 新規セッションのデフォルトのデータ
-		  defaults: {
-		  
-		  }
-    }
+```javascript
+session: {
+  // セッションのサポートを有効または無効にする
+  enabled: true,
+
+  // cookieのセッション識別子名
+  key_name: 'session_id',
+
+  // セッションIDの長さ
+  key_length: 32,
+
+  // 非アクティブなセッションを削除する前の有効期間
+  lifetime: 1000 * 60 * 60 * 24 * 7,
+
+  // セッションストアは,１つの config/stores.js から
+  store: 'redis',
+            
+  // 新規セッションのデフォルトのデータ
+  defaults: {
+  
+  }
+}
+```
 
 いったんセッションを有効にすると、セッションオブジェクトは、各リクエストに割り当てられ、
 データは、セッションストアから自動的にロードされます。このオブジェクトは
@@ -466,21 +502,23 @@ Katanaはセッションをサポートするためのモジュールで構築�
 
 ユーザーリクエストのカウンターの例
 
-    index: function(Response, Request) {
-      var Session = Request.session;
+```javascript
+index: function(Response, Request) {
+  var Session = Request.session;
 
-      // 現在のリクエスト数、デフォルトの0（ゼロ）を得る
-      var counter = Session.get('requests', 0);
+  // 現在のリクエスト数、デフォルトの0（ゼロ）を得る
+  var counter = Session.get('requests', 0);
 
-      counter++;
+  counter++;
 
-      // 新しい値を設定
-      Session.set('requests', counter);
+  // 新しい値を設定
+  Session.set('requests', counter);
 
-      // セッションデータは、自動的にレスポンスを送信する前にストアに保存されます
-      // また、configのkey_nameからCookieにセッションIDを保存します。
-      Response.send('You have visited this page '+ counter +' times');
-    }
+  // セッションデータは、自動的にレスポンスを送信する前にストアに保存されます
+  // また、configのkey_nameからCookieにセッションIDを保存します。
+  Response.send('You have visited this page '+ counter +' times');
+}
+```
 
 ## Logging
 
