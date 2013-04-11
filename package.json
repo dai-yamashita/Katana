@@ -1,6 +1,6 @@
 {
   "name": "katana",
-  "description": "Easy to use, hmvc scalable web framework for any Node.js samurai.",
+  "description": "Easy to use, modular web framework for any Node.js samurai.",
   "version": "0.2.0",
   
   "author": "Shogun <Shogun147@gmail.com> (http://github.com/Shogun147)",
