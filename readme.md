@@ -76,7 +76,7 @@ $ node app
     ├── public
     │   ├── images
     │   ├── scripts
-    │   └── styles
+    │   └── css
     └── temp
 
 ## Routing
