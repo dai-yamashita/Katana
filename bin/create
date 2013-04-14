@@ -63,7 +63,7 @@ App.command('create [path]')
           path + 'application/models',
           path + 'public/images', 
           path + 'public/scripts', 
-          path + 'public/styles',
+          path + 'public/css',
           path + 'modules', 
           path + 'temp/files'
         ];
