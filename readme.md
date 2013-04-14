@@ -278,7 +278,7 @@ Class('Home_Controller', {
         return Request.redirect('/login');
       }
 
-      // else wee call original method
+      // else we call original method
       method(Response, Request);
     }
   }
