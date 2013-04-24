@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-var mod_root = require('path').normalize(__dirname + '/../');
-var root     = process.cwd() + '/';
-var eol      = require('os').platform() == 'win32' ? '\r\n' : '\n';
-
-var info = require(mod_root +'package.json');
-
 var Path     = require('path');
 var Fs       = require('fs');
 var spawn    = require('child_process').spawn;
+
+var mod_root = Path.normalize(__dirname + '/../');
+var root     = process.cwd() + Path.sep;
+var eol      = require('os').EOL;
+
+var info = require(mod_root +'package.json');
 
 var Async    = require('async');
 var mkdir    = require('mkdirp');
@@ -19,7 +19,7 @@ var App = require('commander');
 App.version(info.version);
 
 var Err = function(message) {
-  console.log('\n', message);
+  console.log(eol, message);
 
   process.exit();
 }
@@ -27,7 +27,7 @@ var Err = function(message) {
 App.command('create [path]')
 .description('create katana application')
 .action(function(path) {
-  path = path ? Path.resolve(root, path) +'/' : root;
+  path = path ? Path.resolve(root, path) + Path.sep : root;
 
   App.confirm('Create application at: '+ path +' ? [Yes|No]: ', function(ok) {
     if (!ok) { process.exit(); }
@@ -47,7 +47,7 @@ App.command('create [path]')
           if (!pending) { return callback(); }
 
           items.forEach(function(item) {
-            copy(mod_root +'template/'+ item, path + item, function(error) {
+            copy(mod_root +'template/' + item, path + item, function(error) {
               if (error) { console.log(error); }
 
               if (!--pending) {

@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-var mod_root = require('path').normalize(__dirname + '/../');
-var root     = process.cwd() + '/';
-var eol      = require('os').platform() == 'win32' ? '\r\n' : '\n';
+var Path = require('path');
+
+var mod_root = Path.normalize(__dirname + '/../');
+var root     = process.cwd() + Path.sep;
+var eol      = require('os').EOL;
 
 var spawn = require('child_process').spawn;
 
@@ -55,9 +57,9 @@ if (command === 'create' || (command !== 'create' && !args.length)) {
   args.unshift(command);
 }
 
-var bin = mod_root +'bin/'+ command;
+var bin = Path.join(mod_root, 'bin', command);
 
-var proc = spawn(bin, args, {
+var proc = spawn('node', [bin].concat(args), {
   cwd: root,
   stdio: 'inherit'
 });
