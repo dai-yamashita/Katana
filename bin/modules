@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-var mod_root = require('path').normalize(__dirname + '/../');
-var root     = process.cwd() + '/';
-var eol      = require('os').platform() == 'win32' ? '\r\n' : '\n';
-
 var Path     = require('path');
 var Fs       = require('fs');
 var spawn    = require('child_process').spawn;
+
+var mod_root = Path.normalize(__dirname + '/../');
+var root     = process.cwd() + Path.sep;
+var eol      = require('os').EOL;
 
 var Async    = require('async');
 var request  = require('request');
@@ -32,7 +32,7 @@ var App = require('commander');
 App.version(info.version);
 
 var Err = function(message) {
-  console.log('\n', message);
+  console.log(eol, message);
 
   process.exit();
 }
@@ -234,13 +234,13 @@ App.command('install <name> [url]')
       }).pipe(tar.Extract({ path: root +'temp/modules/'+ name })).on('error', function(error) {
         Err('Error: \n'+ error);
       }).on('end', function() {
-        Fs.readdir(root +'temp/modules/'+ name, function(error, items) {
-          if (error || !items.length) { return Err('Error: '+ (error ? '\n'+error : 'module extracting failed!')); }
+        Fs.readdir(Path.join(root, 'temp', 'modules', name), function(error, items) {
+          if (error || !items.length) { return Err('Error: '+ (error ? eol + error : 'module extracting failed!')); }
     
           var tmp = items[0];
           var is_file = false;
 
-          Fs.readdir(root +'temp/modules/'+ name +'/'+ tmp, function(error, items) {
+          Fs.readdir(Path.join(root, 'temp', 'modules', name, tmp), function(error, items) {
             var pending = items.length;
 
             Async.series([
@@ -254,7 +254,7 @@ App.command('install <name> [url]')
                     callback(error);
                   });
                 } else {
-                  Fs.mkdir(root +'modules/'+ name, 0777, function(error) {
+                  Fs.mkdir(Path.join(root, 'modules', name), 0777, function(error) {
                     if (error) { return callback(error); }
 
                     items.forEach(function(item) {
@@ -279,7 +279,7 @@ App.command('install <name> [url]')
               function(callback) {
                 if (is_file) { return callback(); }
 
-                Fs.readdir(root +'modules/'+ name +'/hooks', function(error, hooks) {
+                Fs.readdir(Path.join(root, 'modules', name, 'hooks'), function(error, hooks) {
                   if (error) { return callback(); }
 
                   var pending = hooks.length;
@@ -287,7 +287,7 @@ App.command('install <name> [url]')
                   if (!pending) { return callback(); }
 
                   hooks.forEach(function(hook) {
-                    Fs.chmod(root +'modules/'+ name +'/hooks/'+ hook, '+x', function(error) {
+                    Fs.chmod(Path.join(root, 'modules', name, 'hooks', hook), '+x', function(error) {
                       if (error) { console.log('Warning:'.magento, 'could not make hook "'+ hook +'" executable.'); }
 
                       if (!--pending) {
@@ -336,7 +336,7 @@ App.command('install <name> [url]')
 });
 
 function check_installed(name, callback) {
-  Fs.exists(root +'modules/'+ name, function(exists) {
+  Fs.exists(Path.join(root, 'modules', name), function(exists) {
     if (!exists) {
       return callback(true, false);
     }
@@ -395,7 +395,7 @@ App.command('uninstall <name>')
   run_hook('uninstall', module, function(error) {
     if (error) { return Err(error); }
 
-    var path = root +'modules/'+ module;
+    var path = Path.join(root, 'modules', module);
 
     if (Fs.existsSync(path +'.js')) {
       path += '.js';
@@ -418,10 +418,10 @@ App.command('uninstall <name>')
 });
 
 var run_hook = function(name, module, callback) {
-  Fs.exists(root +'modules/'+ module +'/hooks/'+ name +'.js', function(exists) {
+  Fs.exists(Path.join(root, 'modules', module, 'hooks', name +'.js'), function(exists) {
     if (!exists) { return callback(); }
 
-    var hook = spawn(root +'modules/'+ module +'/hooks/'+ name +'.js', [], {
+    var hook = spawn('node', Path.join(root, 'modules', module, 'hooks', name +'.js'), [], {
       cwd: root,
       stdio: 'inherit'
     });
