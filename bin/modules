@@ -421,7 +421,7 @@ var run_hook = function(name, module, callback) {
   Fs.exists(Path.join(root, 'modules', module, 'hooks', name +'.js'), function(exists) {
     if (!exists) { return callback(); }
 
-    var hook = spawn('node', Path.join(root, 'modules', module, 'hooks', name +'.js'), [], {
+    var hook = spawn('node', [Path.join(root, 'modules', module, 'hooks', name +'.js')], {
       cwd: root,
       stdio: 'inherit'
     });
