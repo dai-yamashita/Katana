@@ -10,10 +10,11 @@ module.exports = {
   },
 	
   view: {
- 	engine: 'ejs',
-	ext: '.html',
-    o_tag: '<?',
-    c_tag: '?>'
+ 	  engine: 'ejs',
+    cache: true,
+	  extension: '.html',
+    open: '<?',
+    close: '?>'
   },
 	
   cookie: {
