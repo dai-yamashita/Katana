@@ -1,12 +1,12 @@
 {
   "auth": {
-	"description": "Basic authorization and authentication module with roles and rights",
+	  "description": "Basic authorization and authentication module with roles and rights",
 	
-	"author": {
-	  "name": "Shogun147",
-	  "email": "Shogun147@gmail.com",
-	  "url": "https://github.com/Shogun147"
-	},
+	  "author": {
+	    "name": "Shogun147",
+	    "email": "Shogun147@gmail.com",
+	    "url": "https://github.com/Shogun147"
+	  },
 
     "github": {
       "username": "Shogun147",
@@ -14,5 +14,22 @@
     },
 
     "tags": ["v0.1.0"]
-  }
+  },
+
+  "methodOverride": {
+    "description": "Faux HTTP method support.",
+  
+    "author": {
+      "name": "Shogun147",
+      "email": "Shogun147@gmail.com",
+      "url": "https://github.com/Shogun147"
+    },
+
+    "github": {
+      "username": "Shogun147",
+      "repository": "Katana-methodOverride"
+    },
+
+    "tags": ["v0.1.0"]
+  },
 }
