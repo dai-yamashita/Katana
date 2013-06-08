@@ -130,6 +130,14 @@ routes: {
 }
 ```
 
+We may also have controllers in subdirectories. Just set the directory path in square brackets.<br>
+For example there is an `users` controller in `controllers/api` directory. The routing will look like:
+```javascript
+routes: [
+  ['api/users/*', '[api]/users/:1'] // the slash after closing ] is optional
+]
+```
+
 The `#` symbol meen that this request will pass to `auth` module, `controller=users` and `action=profile`.
 
 You could also set format for user_id like so:
@@ -163,6 +171,29 @@ More examples:
    }
  }
 ```
+
+RESTful routes:
+```javascript
+  routes: [
+    ['get api/:resource',          '[api]:resource/index'],
+    ['get api/:resource/new',      '[api]:resource/new'],
+    ['post api/:resource',         '[api]:resource/create'],
+    ['get api/:resource/:id',      '[api]:resource/show'],
+    ['get api/:resource/:id/edit', '[api]:resource/edit'],
+    ['put api/:resource/:id',      '[api]:resource/update'],
+    ['delete api/:resource/:id',   '[api]:resource/remove']
+  ]
+```
+This means in `api` directory you could have a controller for each resource with methods `index, new, create, show, edit, update and remove`.<br>
+If you use such HTTP methods as `put` or `delete` you must have some middleware which will rewrite the method. You could install [methodOverride](https://github.com/Shogun147/Katana-methodOverride) module with `katana module install methodOverride` command in your app root. Don't forget to enable it with `katana module enable methodOverride`.<br>
+On the client side, set desired method in hidden field with `_method` name:
+```html
+<form action="/api" method="post">
+  <input type="hidden" name="_method" value="put">
+</form>
+```
+Field name could be changed in the main module file.
+
 
 ## Modules
 
