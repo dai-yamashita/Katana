@@ -25,7 +25,7 @@
   "dependencies": {
 	  "mkdirp": "*", "async": "*", "joose": "*", "formidable": "*", "semver": "*", "progress": "*",
 	  "crypto": "*", "validator": "*", "underscore": "*", "qs": "*", "commander": "*", 
-    "node-static": "*", "winston": "*", "request": "*", "colors": "*", "tar": "*", "consolidate": "*"
+    "node-static": "*", "winston": "*", "request": "*", "colors": "*", "tar": "*"
   },
   "devDependencies": {
   },
