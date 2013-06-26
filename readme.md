@@ -246,10 +246,10 @@ Katana binary has few new commands for interacting with modules:
   Examples of install:
     * `katana module install auth`
     * `katana module install auth@0.1.0`
-    * `katana module install Shogun147:Katana-auth`
-    * `katana module install Shogun147:Katana-auth@0.1.0`
-    * `katana module install https://github.com/Shogun147/Katana-auth/tarball/master`
-    * `katana module install http://my-site.com/downloads/module/v1.0.5`
+    * `katana module install auth Shogun147:Katana-auth`
+    * `katana module install auth Shogun147:Katana-auth@0.1.0`
+    * `katana module install auth https://github.com/Shogun147/Katana-auth/tarball/master`
+    * `katana module install auth http://my-site.com/downloads/module/v1.0.5`
 
 * `katana module uninstall <name>` - uninstall and remove module
 * `katana module enable <name>` - enable module
