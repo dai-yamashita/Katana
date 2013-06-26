@@ -1,38 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <title>Katana by Shogun147</title>
 
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <title>Katana - easy to use, modular web framework for any Node.js samurai.</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Katana</h1>
-        <h2>Easy to use, hmvc scalable web framework for any Node.js samurai</h2>
-        <a href="https://github.com/Shogun147/Katana" class="button"><small>View project on</small>GitHub</a>
-      </div>
-    </header>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Katana</h1>
+        <p class="header">Easy to use, modular web framework for any Node.js samurai</p>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1><a href="https://github.com/Shogun147/Katana">Katana</a></h1>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Shogun147/Katana/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Shogun147/Katana/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Shogun147/Katana">View On GitHub</a></li>
+        </ul>
 
-<p>Easy to use, hmvc scalable web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.</p>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Shogun147">Shogun147</a></p>
 
-<h2>Contents</h2>
+
+      </header>
+      <section>
+        <h1>
+<a name="katana" class="anchor" href="#katana"><span class="octicon octicon-link"></span></a><a href="https://github.com/Shogun147/Katana">Katana</a>
+</h1>
+
+<p>Easy to use, modular web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.</p>
+
+<h2>
+<a name="contents" class="anchor" href="#contents"><span class="octicon octicon-link"></span></a>Contents</h2>
 
 <ul>
 <li><a href="#features">Features</a></li>
@@ -55,7 +60,8 @@
 <li><a href="#examples">Examples</a></li>
 <li><a href="#contributing">Contributing</a></li>
 <li><a href="#license">License</a></li>
-</ul><h2>Features</h2>
+</ul><h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
 <li>Powerful, flexible classical router</li>
@@ -66,30 +72,33 @@
 <li>Templating, partials support</li>
 <li>Fully non-blocking</li>
 <li>…</li>
-</ul><h2>Installation</h2>
+</ul><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Fastest way to get Katana is to install it with NPM:</p>
 
-<pre><code>$ npm install -g katana
-</code></pre>
+<div class="highlight"><pre><span class="nv">$ </span>npm install -g katana
+</pre></div>
 
-<h2>Quick start</h2>
+<h2>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick start</h2>
 
 <p>The quickest way to start is to utilize the Katana executable to generate an application:</p>
 
-<pre><code>$ katana create app
-$ cd app
-$ npm install
-</code></pre>
+<div class="highlight"><pre><span class="nv">$ </span>katana create app
+<span class="nv">$ </span><span class="nb">cd </span>app
+<span class="nv">$ </span>npm install
+</pre></div>
 
 <p>The app path is optional and is relative to current path.</p>
 
 <p>Then you are ready to start the server:</p>
 
-<pre><code>$ node app
-</code></pre>
+<div class="highlight"><pre><span class="nv">$ </span>node app
+</pre></div>
 
-<h3>Basic application layout after creation will look like this:</h3>
+<h3>
+<a name="basic-application-layout-after-creation-will-look-like-this" class="anchor" href="#basic-application-layout-after-creation-will-look-like-this"><span class="octicon octicon-link"></span></a>Basic application layout after creation will look like this:</h3>
 
 <pre><code>.
 ├── app.js
@@ -109,11 +118,12 @@ $ npm install
 ├── public
 │   ├── images
 │   ├── scripts
-│   └── styles
+│   └── css
 └── temp
 </code></pre>
 
-<h2>Routing</h2>
+<h2>
+<a name="routing" class="anchor" href="#routing"><span class="octicon octicon-link"></span></a>Routing</h2>
 
 <p>Classical routing is one the most powerful futures of Katana framework. It uses uri segments to determine the controller and action for a requested URI.<br>
 So unlike in other Node.js framework you may just add controllers and actions without the need to create routing rules, but also let you write your own rules which may change the path.<br>
@@ -126,80 +136,113 @@ Then <code>controller=account</code> and <code>action=login</code>.</p>
 
 <p>You can also rewrite path by set the routing rule, for example to view user profile:</p>
 
-<pre><code>routes: {
-  // each request method may have it's own routes
-  get: [
-    ['user/:user_id', 'users/profile']
-  ]
+<div class="highlight"><pre><span class="nx">routes</span><span class="o">:</span> <span class="p">{</span>
+  <span class="c1">// each request method may have it's own routes</span>
+  <span class="nx">get</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'user/:user_id'</span><span class="p">,</span> <span class="s1">'users/profile'</span><span class="p">]</span>
+  <span class="p">]</span>
 
-  // also you can set routes for all methods
-  all: [
-    // if routes will not match for requested method then will try this routes
-  ]
-}
-</code></pre>
+  <span class="c1">// also you can set routes for all methods</span>
+  <span class="nx">all</span><span class="o">:</span> <span class="p">[</span>
+    <span class="c1">// if routes will not match for requested method then will try this routes</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 
 <p>or you may set request method as route prefix:</p>
 
-<pre><code>routes: [
-  ['get user/:user_id', 'users/profile'], // will route this for get method
-  ['* user/:user_id', 'users/profile'] // all methods
-  ['user/:user_id', 'users/profile'] // if not set then will check all methods
-]
-</code></pre>
+<div class="highlight"><pre><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s1">'get user/:user_id'</span><span class="p">,</span> <span class="s1">'users/profile'</span><span class="p">],</span> <span class="c1">// will route this for get method</span>
+  <span class="p">[</span><span class="s1">'* user/:user_id'</span><span class="p">,</span> <span class="s1">'users/profile'</span><span class="p">]</span> <span class="c1">// all methods</span>
+  <span class="p">[</span><span class="s1">'user/:user_id'</span><span class="p">,</span> <span class="s1">'users/profile'</span><span class="p">]</span> <span class="c1">// if not set then will check all methods</span>
+<span class="p">]</span>
+</pre></div>
 
 <p>This will set <code>controller=users</code> and <code>action=profile</code> and user_id will be available as <code>Request.params.user_id</code>.</p>
 
 <p>Or you may pass this request to mvc module:</p>
 
-<pre><code>routes: {
-  get: [
-    ['user/:user_id', '#auth/users/profile']
-  ]
-}
-</code></pre>
+<div class="highlight"><pre><span class="nx">routes</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">get</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'user/:user_id'</span><span class="p">,</span> <span class="s1">'#auth/users/profile'</span><span class="p">]</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 
 <p>The <code>#</code> symbol meen that this request will pass to <code>auth</code> module, <code>controller=users</code> and <code>action=profile</code>.</p>
 
 <p>You could also set format for user_id like so:</p>
 
-<pre><code>routes: {
-  get: [
-    ['user/:user_id([0-9]+)', '#auth/users/profile']
-  ]
-}
-</code></pre>
+<div class="highlight"><pre><span class="nx">routes</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">get</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'user/:user_id([0-9]+)'</span><span class="p">,</span> <span class="s1">'#auth/users/profile'</span><span class="p">]</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 
 <p><code>!important:</code> mvc modules may have their own routing rules.</p>
 
+<p>We may also have controllers in subdirectories. Just set the directory path in square brackets.<br>
+For example there is an <code>users</code> controller in <code>controllers/api</code> directory. The routing will look like:</p>
+
+<div class="highlight"><pre><span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+  <span class="p">[</span><span class="s1">'api/users/*'</span><span class="p">,</span> <span class="s1">'[api]/users/:1'</span><span class="p">]</span> <span class="c1">// the slash after closing ] is optional</span>
+<span class="p">]</span>
+</pre></div>
+
+<p>RESTful routes:</p>
+
+<div class="highlight"><pre>  <span class="nx">routes</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">'get api/:resource'</span><span class="p">,</span>          <span class="s1">'[api]:resource/index'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'get api/:resource/new'</span><span class="p">,</span>      <span class="s1">'[api]:resource/new'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'post api/:resource'</span><span class="p">,</span>         <span class="s1">'[api]:resource/create'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'get api/:resource/:id'</span><span class="p">,</span>      <span class="s1">'[api]:resource/show'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'get api/:resource/:id/edit'</span><span class="p">,</span> <span class="s1">'[api]:resource/edit'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'put api/:resource/:id'</span><span class="p">,</span>      <span class="s1">'[api]:resource/update'</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">'delete api/:resource/:id'</span><span class="p">,</span>   <span class="s1">'[api]:resource/remove'</span><span class="p">]</span>
+  <span class="p">]</span>
+</pre></div>
+
+<p>This means in <code>api</code> directory you could have a controller for each resource with methods <code>index</code>, <code>new</code>, <code>create</code>, <code>show</code>, <code>edit</code>, <code>update</code> and <code>remove</code>.<br>
+If you use such HTTP methods as <code>put</code> or <code>delete</code> you must have some middleware which will rewrite the method. You could install <a href="https://github.com/Shogun147/Katana-methodOverride">methodOverride</a> module with <code>katana module install methodOverride</code> command in your app root. Don't forget to enable it with <code>katana module enable methodOverride</code>.<br>
+On the client side, set desired method in hidden field with <code>_method</code> name:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/api"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"_method"</span> <span class="na">value=</span><span class="s">"put"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</pre></div>
+
+<p>Field name could be changed in the main module file.</p>
+
 <p>More examples:</p>
 
-<pre><code>['news/:category/rss.:format(xml|json)?', 'news/rss'] will allow:
- news/any_category/rss
- news/any_category/rss.xml
- news/any_category/rss.json
+<div class="highlight"><pre><span class="p">[</span><span class="s1">'news/:category/rss.:format(xml|json)?'</span><span class="p">,</span> <span class="s1">'news/rss'</span><span class="p">]</span> <span class="nx">will</span> <span class="nx">allow</span><span class="o">:</span>
+ <span class="nx">news</span><span class="o">/</span><span class="nx">any_category</span><span class="o">/</span><span class="nx">rss</span>
+ <span class="nx">news</span><span class="o">/</span><span class="nx">any_category</span><span class="o">/</span><span class="nx">rss</span><span class="p">.</span><span class="nx">xml</span>
+ <span class="nx">news</span><span class="o">/</span><span class="nx">any_category</span><span class="o">/</span><span class="nx">rss</span><span class="p">.</span><span class="nx">json</span>
 
- and News controller:
+ <span class="nx">and</span> <span class="nx">News</span> <span class="nx">controller</span><span class="o">:</span>
 
- methods: {
-   rss: function(Response, Request) {
-     // Now we can use Request.params.category and Request.params.format
-     var format = Request.params.format || 'xml'; // default xml
+ <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+   <span class="nx">rss</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+     <span class="c1">// Now we can use Request.params.category and Request.params.format</span>
+     <span class="kd">var</span> <span class="nx">format</span> <span class="o">=</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">format</span> <span class="o">||</span> <span class="s1">'xml'</span><span class="p">;</span> <span class="c1">// default xml</span>
 
-     ...
-   }
- }
-</code></pre>
+     <span class="p">...</span>
+   <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
 
-<h2>Modules</h2>
+<h2>
+<a name="modules" class="anchor" href="#modules"><span class="octicon octicon-link"></span></a>Modules</h2>
 
 <p>In Katana modules can be used as mvc part or your application or as middleware.</p>
 
 <p>For mvc modules you can use routing the same way as for main mvc.<br>
 Also you can run them as widgets by calling run method: </p>
 
-<pre><code>Module('auth').run('users/list');
-</code></pre>
+<div class="highlight"><pre><span class="nx">Module</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">).</span><span class="nx">run</span><span class="p">(</span><span class="s1">'users/list'</span><span class="p">);</span>
+</pre></div>
 
 <p>This will run <code>list</code> action of <code>users</code> controller from <code>auth</code> module.</p>
 
@@ -207,19 +250,20 @@ Also you can run them as widgets by calling run method: </p>
 
 <p>For example auth module can look like this:</p>
 
-<pre><code>var User = App.Model('auth:user'); // get user model of auth module
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Model</span><span class="p">(</span><span class="s1">'auth:user'</span><span class="p">);</span> <span class="c1">// get user model of auth module</span>
 
-// listen new request event
-App.on('request', function(Request, Response, callback) {
-  Request.user = new User(Request.session);
+<span class="c1">// listen new request event</span>
+<span class="nx">App</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'request'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Request</span><span class="p">,</span> <span class="nx">Response</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Request</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">session</span><span class="p">);</span>
 
-  callback(); // callback when we're done here, required for application to continue
-});
-</code></pre>
+  <span class="nx">callback</span><span class="p">();</span> <span class="c1">// callback when we're done here, required for application to continue</span>
+<span class="p">});</span>
+</pre></div>
 
 <p>and then in our controller we can access user object as <code>Request.user</code>.</p>
 
-<h3>Sharing modules</h3>
+<h3>
+<a name="sharing-modules" class="anchor" href="#sharing-modules"><span class="octicon octicon-link"></span></a>Sharing modules</h3>
 
 <p><a href="https://github.com/Shogun147/Katana">Katana</a> comes with an basic modules sharing system which allow to download public modules and install them for application.</p>
 
@@ -229,11 +273,11 @@ App.on('request', function(Request, Response, callback) {
 <li>
 <code>katana modules</code> - list all available modules.</li>
 <li>
-<code>katana modules-search &lt;str&gt;</code> - search modules that contain <code>str</code> in name or description.</li>
+<code>katana module search &lt;str&gt;</code> - search modules that contain <code>str</code> in name or description.</li>
 <li>
-<code>katana modules-update</code> - update modules list and their info.</li>
+<code>katana module update</code> - update modules list and their info.</li>
 <li>
-<p><code>katana modules-install &lt;name&gt; [url]</code> - install or reinstall app module.</p>
+<p><code>katana module install &lt;name&gt; [url]</code> - install or reinstall app module.</p>
 
 <ul>
 <li>
@@ -249,200 +293,205 @@ For custom download url modules still must be gzipped tarballs.<br>
 Examples of install:</p>
 
 <ul>
-<li><code>katana modules-install auth</code></li>
-<li><code>katana modules-install auth@0.1.0</code></li>
-<li><code>katana modules-install Shogun147:Katana-auth</code></li>
-<li><code>katana modules-install Shogun147:Katana-auth@0.1.0</code></li>
-<li><code>katana modules-install https://github.com/Shogun147/Katana-auth/tarball/master</code></li>
-<li><code>katana modules-install http://my-site.com/downloads/module/v1.0.5</code></li>
+<li><code>katana module install auth</code></li>
+<li><code>katana module install auth@0.1.0</code></li>
+<li><code>katana module install Shogun147:Katana-auth</code></li>
+<li><code>katana module install Shogun147:Katana-auth@0.1.0</code></li>
+<li><code>katana module install https://github.com/Shogun147/Katana-auth/tarball/master</code></li>
+<li><code>katana module install http://my-site.com/downloads/module/v1.0.5</code></li>
 </ul>
 </li>
-<li><p><code>katana modules-uninstall &lt;name&gt;</code> - uninstall and remove module</p></li>
-<li><p><code>katana modules-enable &lt;name&gt;</code> - enable module</p></li>
-<li><p><code>katana modules-disable &lt;name&gt;</code> - disable module</p></li>
+<li><p><code>katana module uninstall &lt;name&gt;</code> - uninstall and remove module</p></li>
+<li><p><code>katana module enable &lt;name&gt;</code> - enable module</p></li>
+<li><p><code>katana module disable &lt;name&gt;</code> - disable module</p></li>
 </ul><p>For each of this actions [<code>install</code>, <code>uninstall</code>, <code>enable</code>, <code>disable</code>] modules could have their hooks which would be called. The hooks are stored in hooks directory of module.<br>
 The hooks are useful when there is a need to do something unique on this actions. For ex the <code>install</code> hook (modules/:name/hooks/install.js) could create new tables in the database or copy modules assets to public directory…</p>
 
 <p>The module registry is downloaded from <code>https://raw.github.com/Shogun147/Katana/master/modules.json</code>. To add new modules to the list just fork this file and send an pull request. This will make your module listed on <code>katana modules</code> command and on search.</p>
 
-<h2>Controllers</h2>
+<h2>
+<a name="controllers" class="anchor" href="#controllers"><span class="octicon octicon-link"></span></a>Controllers</h2>
 
 <p>Controllers are almost most important part of any application, they handle incoming requests and send responses.</p>
 
 <p>A simple controller looks like this:</p>
 
-<pre><code>// define our controller Class
-Class('Home_Controller', {
-  isa: App.Controller, // extend Katana Core Controller
+<div class="highlight"><pre><span class="c1">// define our controller Class</span>
+<span class="nx">Class</span><span class="p">(</span><span class="s1">'Home_Controller'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">isa</span><span class="o">:</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Controller</span><span class="p">,</span> <span class="c1">// extend Katana Core Controller</span>
 
-  methods: {
-    index: function(Response, Request) {
-      Response.send('Hello World!');
-    }
-  }
-});
+  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
 
-module.exports = new Home_Controller;
-</code></pre>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Home_Controller</span><span class="p">;</span>
+</pre></div>
 
 <p>And now we can access this <code>index</code> action by opening http://katana:8000/, without any uri path this will use default controller and action from config which are <code>home</code> and <code>index</code>. Also we can access them directly by opening http://katana:8000/<code>home</code>/ with <code>index</code> as default action or http://katana:8000/<code>home</code>/<code>index</code>.</p>
 
-<h3>Hooks</h3>
+<h3>
+<a name="hooks" class="anchor" href="#hooks"><span class="octicon octicon-link"></span></a>Hooks</h3>
 
 <p>Due the power of Joose <a href="http://joose.github.com/Joose/doc/html/Joose/Manual/MethodModifiers.html">Method Modifiers</a> (<code>before</code>, <code>after</code>, <code>override</code> and <code>around</code>) we may change the way class methods are called, actions that may happen before or after method call or even modify results that they could return.</p>
 
 <p>For example let's restrict index method only for logged in users:</p>
 
-<pre><code>Class('Home_Controller', {
-  isa: App.Controller,
+<div class="highlight"><pre><span class="nx">Class</span><span class="p">(</span><span class="s1">'Home_Controller'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">isa</span><span class="o">:</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Controller</span><span class="p">,</span>
 
-  methods: {
-    index: function(Response, Request) {
-      Response.send('Hello World!');
-    }
-  },
+  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
 
-  around: {
-    // the same name for the method we want to wrap
-    index: function(method, Response, Request) {
-      var User = Request.user;
+  <span class="nx">around</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// the same name for the method we want to wrap</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
 
-      // if the user is not logged in then redirect to login page
-      if (!User.logged_in()) {
-        return Request.redirect('/login');
-      }
+      <span class="c1">// if the user is not logged in then redirect to login page</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">User</span><span class="p">.</span><span class="nx">logged_in</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">'/login'</span><span class="p">);</span>
+      <span class="p">}</span>
 
-      // else wee call original method
-      method(Response, Request);
-    }
-  }
-});
-</code></pre>
+      <span class="c1">// else we call original method</span>
+      <span class="nx">method</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 
 <p>The <code>call</code> modifier allow as to use regular expressions and apply that hook to all methods that matches the condition.</p>
 
 <p>For example let's restrict access for all methods:</p>
 
-<pre><code>Class('Home_Controller', {
-  isa: App.Controller,
+<div class="highlight"><pre><span class="nx">Class</span><span class="p">(</span><span class="s1">'Home_Controller'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">isa</span><span class="o">:</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Controller</span><span class="p">,</span>
 
-  methods: {
-    index: function(Response, Request) {
-      Response.send('Hello World!');
-    }
-  },
+  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
 
-  call: {
-    // use regexp instead of methods name
-    // this will apply to all controller methods calls
-   '.*': function(method, Response, Request) {
-      var User = Request.user;
+  <span class="nx">call</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// use regexp instead of methods name</span>
+    <span class="c1">// this will apply to all controller methods calls</span>
+   <span class="s1">'.*'</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
 
-      // if the user is not logged in then redirect to login page
-      if (!User.logged_in()) {
-        return Request.redirect('/login');
-      }
+      <span class="c1">// if the user is not logged in then redirect to login page</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">User</span><span class="p">.</span><span class="nx">logged_in</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="s1">'/login'</span><span class="p">);</span>
+      <span class="p">}</span>
 
-      // else we call original method
-      method(Response, Request);
-    }
-  }
-});
-</code></pre>
+      <span class="c1">// else we call original method</span>
+      <span class="nx">method</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 
-<h2>Models</h2>
+<h2>
+<a name="models" class="anchor" href="#models"><span class="octicon octicon-link"></span></a>Models</h2>
 
 <p>Katana did not limit the developer to define a model in some way or to use a specific module. It just autoload all from the models directory of application or a module and store them in a local registry.</p>
 
 <p>You can access them like this:<br></p>
 
-<pre><code>var News = App.Model('news'); // get model object
-</code></pre>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">News</span> <span class="o">=</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Model</span><span class="p">(</span><span class="s1">'news'</span><span class="p">);</span> <span class="c1">// get model object</span>
+</pre></div>
 
 <p>To get a model from module you need to separate module name and model path with colon <code>:</code>, for example to get <code>user</code> model of <code>auth</code> module call: <code>App.Model('auth:user')</code>.</p>
 
 <p>Model file can look like this:</p>
 
-<pre><code>var Mongoose = App.Store('mongoose'); // get mongoose connection, look at stores config file
-var Schema = require('mongoose').Schema;
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">Mongoose</span> <span class="o">=</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Store</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">);</span> <span class="c1">// get mongoose connection, look at stores config file</span>
+<span class="kd">var</span> <span class="nx">Schema</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'mongoose'</span><span class="p">).</span><span class="nx">Schema</span><span class="p">;</span>
 
-var User = new Schema({
-  username: String,
-  password: String,
-  email: String,
-  signed_at: Date,
-  roles: ['user', 'moderator', 'administrator']
-});
+<span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Schema</span><span class="p">({</span>
+  <span class="nx">username</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+  <span class="nx">password</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+  <span class="nx">email</span><span class="o">:</span> <span class="nb">String</span><span class="p">,</span>
+  <span class="nx">signed_at</span><span class="o">:</span> <span class="nb">Date</span><span class="p">,</span>
+  <span class="nx">roles</span><span class="o">:</span> <span class="p">[</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'moderator'</span><span class="p">,</span> <span class="s1">'administrator'</span><span class="p">]</span>
+<span class="p">});</span>
 
-module.exports = Mongoose.model('User', User);
-</code></pre>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Mongoose</span><span class="p">.</span><span class="nx">model</span><span class="p">(</span><span class="s1">'User'</span><span class="p">,</span> <span class="nx">User</span><span class="p">);</span>
+</pre></div>
 
-<h2>Views</h2>
+<h2>
+<a name="views" class="anchor" href="#views"><span class="octicon octicon-link"></span></a>Views</h2>
 
 <p>To render a view you can use a few methods:</p>
 
-<pre><code>var View = App.View;
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">View</span> <span class="o">=</span> <span class="nx">App</span><span class="p">.</span><span class="nx">View</span><span class="p">;</span>
 
-Class('Home_Controller', {
-  isa: App.Controller,
+<span class="nx">Class</span><span class="p">(</span><span class="s1">'Home_Controller'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">isa</span><span class="o">:</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Controller</span><span class="p">,</span>
 
-  methods: {
-    index: function(Response, Request) {
-      // directly render and send a view content
-      Response.render('index', { title: 'Hello World' }); // this will render index.html file from views
+  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// directly render and send a view content</span>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span> <span class="c1">// this will render index.html file from views</span>
 
-      // get rendered content
-      var content = View.render('index', { title: 'Hello World' });
-      // and latter send response
-      Response.send(content);
+      <span class="c1">// get rendered content</span>
+      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span>
+      <span class="c1">// and latter send response</span>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
 
-      // render a view from module
-      Users.find({}, function(error, users) {
-        if (error) { return Response.send('Error! Blablabla'); }
+      <span class="c1">// render a view from module</span>
+      <span class="nx">Users</span><span class="p">.</span><span class="nx">find</span><span class="p">({},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Error! Blablabla'</span><span class="p">);</span> <span class="p">}</span>
 
-        // again module name separated by colon, and then path to the view
-        var list = View.render('auth:list', users);
+        <span class="c1">// again module name separated by colon, and then path to the view</span>
+        <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'auth:list'</span><span class="p">,</span> <span class="nx">users</span><span class="p">);</span>
 
-        Response.render('index', { users: list });
-      });
-    }
-  }
-});
-</code></pre>
+        <span class="nx">Response</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">users</span><span class="o">:</span> <span class="nx">list</span> <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 
 <p>Controllers can also have their global data, which will be passed for the this.render calls:</p>
 
-<pre><code>Class('Home_Controller', {
-  isa: App.Controller,
+<div class="highlight"><pre><span class="nx">Class</span><span class="p">(</span><span class="s1">'Home_Controller'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">isa</span><span class="o">:</span> <span class="nx">App</span><span class="p">.</span><span class="nx">Controller</span><span class="p">,</span>
 
-  have: {
-    // set global controller data
-    data: {
-      title: 'This is title for all pages for this controller',
-      total_requests: 0
-    }
-  },
+  <span class="nx">have</span><span class="o">:</span> <span class="p">{</span>
+    <span class="c1">// set global controller data</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">title</span><span class="o">:</span> <span class="s1">'This is title for all pages for this controller'</span><span class="p">,</span>
+      <span class="nx">total_requests</span><span class="o">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
 
-  methods: {
-    index: function(Response) {
-      // you can also set global controller data from actions
-      this.set('copyright', 'blablabla');
-      // or
-      this.data.total_requests++;
+  <span class="nx">methods</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// you can also set global controller data from actions</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'copyright'</span><span class="p">,</span> <span class="s1">'blablabla'</span><span class="p">);</span>
+      <span class="c1">// or</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">total_requests</span><span class="o">++</span><span class="p">;</span>
 
-      // by render the view with this.render method, the controller data will pass to this view
-      var content = this.render('index'); // &lt;?-title?&gt;, &lt;?-total_requests?&gt;
+      <span class="c1">// by render the view with this.render method, the controller data will pass to this view</span>
+      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">);</span> <span class="c1">// &lt;?-title?&gt;, &lt;?-total_requests?&gt;</span>
 
-      // we may also rewrite globals by set them on render
-      var content = this.render('index', { title: 'This is rewritted title', foo: 'bar' });
+      <span class="c1">// we may also rewrite globals by set them on render</span>
+      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'This is rewritted title'</span><span class="p">,</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'bar'</span> <span class="p">});</span>
 
-      Response.send(content);
-    }
-  }
-});
-</code></pre>
+      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 
-<h2>Events</h2>
+<h2>
+<a name="events" class="anchor" href="#events"><span class="octicon octicon-link"></span></a>Events</h2>
 
 <p>Katana application emit specific events for different steps.
 Few of them are available for middlewares, the others are for bootstrap control flow.</p>
@@ -451,60 +500,63 @@ Few of them are available for middlewares, the others are for bootstrap control 
 
 <p>Or a <code>chat</code> module which need application server to create a socket.io server.</p>
 
-<pre><code>var socket_io = require('socket.io');
-var io;
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">socket_io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'socket.io'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">io</span><span class="p">;</span>
 
-// ready event is emitted when Http.Server start listening
-App.on('ready', function(callback) {
-  io = socket_io.listen(App.server);
+<span class="c1">// ready event is emitted when Http.Server start listening</span>
+<span class="nx">App</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">io</span> <span class="o">=</span> <span class="nx">socket_io</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">server</span><span class="p">);</span>
 
-  io.sockets.on('connection', function (socket) {
-    // …
-  });
+      <span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'connection'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// …</span>
+      <span class="p">});</span>
 
-  callback();
-});
-</code></pre>
+      <span class="nx">callback</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
 
-<h2>Sessions</h2>
+<h2>
+<a name="sessions" class="anchor" href="#sessions"><span class="octicon octicon-link"></span></a>Sessions</h2>
 
 <p>Katana has build in module for supporting sessions.
 This gives you a way to associate data with each particular visitor of your app and have that data persist between requests.</p>
 
-<h3>Data stores</h3>
+<h3>
+<a name="data-stores" class="anchor" href="#data-stores"><span class="octicon octicon-link"></span></a>Data stores</h3>
 
 <p>For now Katana support only 2 session data stores (more to come):</p>
 
 <ul>
 <li><p><strong>Memory</strong> (by default): useful for development. Session data is saved in memory at worker-process level, which means this will not work with cluster. Also, all sessions disappear when app is restarted.</p></li>
 <li><p><strong>Redis</strong>: Sessions are saved in a redis noSQL database and persist across app restarts. Requires a Redis server or clusters.</p></li>
-</ul><h3>Using sessions</h3>
+</ul><h3>
+<a name="using-sessions" class="anchor" href="#using-sessions"><span class="octicon octicon-link"></span></a>Using sessions</h3>
 
 <p>First of all you need to enable sessions in application config file.
 The default session config look like this:</p>
 
-<pre><code>session: {
-  // enable or disable session support
-      enabled: true,
+<div class="highlight"><pre><span class="nx">session</span><span class="o">:</span> <span class="p">{</span>
+  <span class="c1">// enable or disable session support</span>
+  <span class="nx">enabled</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 
-      // session identifier name for cookie of
-      key_name: 'session_id',
+  <span class="c1">// session identifier name for cookie of</span>
+  <span class="nx">key_name</span><span class="o">:</span> <span class="s1">'session_id'</span><span class="p">,</span>
 
-      // session id length
-      key_length: 32,
+  <span class="c1">// session id length</span>
+  <span class="nx">key_length</span><span class="o">:</span> <span class="mi">32</span><span class="p">,</span>
 
-      // lifetime before delete inactive session
-      lifetime: 1000 * 60 * 60 * 24 * 7,
+  <span class="c1">// lifetime before delete inactive session</span>
+  <span class="nx">lifetime</span><span class="o">:</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span>
 
-      // session store, one from config/stores.js
-      store: 'redis',
+  <span class="c1">// session store, one from config/stores.js</span>
+  <span class="nx">store</span><span class="o">:</span> <span class="s1">'redis'</span><span class="p">,</span>
 
-  // default data for new sessions
-      defaults: {
+  <span class="c1">// default data for new sessions</span>
+  <span class="nx">defaults</span><span class="o">:</span> <span class="p">{</span>
 
-      }
-}
-</code></pre>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 
 <p>Once you enable sessions, the session object will be assigned to each request and data will be loaded automatically from the session store.
 Then this object could be accessed as <code>Request.session</code>.
@@ -512,62 +564,53 @@ For now available public methods are <code>set</code>, <code>get</code> and <cod
 
 <p>Example counter of user requests:</p>
 
-<pre><code>index: function(Response, Request) {
-  var Session = Request.session;
+<div class="highlight"><pre><span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">Session</span> <span class="o">=</span> <span class="nx">Request</span><span class="p">.</span><span class="nx">session</span><span class="p">;</span>
 
-  // get current requests count, default 0
-  var counter = Session.get('requests', 0);
+  <span class="c1">// get current requests count, default 0</span>
+  <span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">Session</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'requests'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 
-  counter++;
+  <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
 
-  // set new value
-  Session.set('requests', counter);
+  <span class="c1">// set new value</span>
+  <span class="nx">Session</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'requests'</span><span class="p">,</span> <span class="nx">counter</span><span class="p">);</span>
 
-  // Session data will be automatically saved in store before sending response
-  // Also will save session id in the cookie with key_name from config
-  Response.send('You have visited this page '+ counter +' times');
-}
-</code></pre>
+  <span class="c1">// Session data will be automatically saved in store before sending response</span>
+  <span class="c1">// Also will save session id in the cookie with key_name from config</span>
+  <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'You have visited this page '</span><span class="o">+</span> <span class="nx">counter</span> <span class="o">+</span><span class="s1">' times'</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
 
-<h2>Logging</h2>
+<h2>
+<a name="logging" class="anchor" href="#logging"><span class="octicon octicon-link"></span></a>Logging</h2>
 
 <p>Katana uses <a href="https://github.com/flatiron/winston">winston</a> module to log.
 Available as <code>App.Log</code> you could add more transports or options to it. Check official docs for this.</p>
 
-<h2>Examples</h2>
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
 
 <ul>
 <li>
 <a href="https://github.com/Shogun147/Katana-ToDo">ToDo</a> - Simple todo application</li>
-</ul><h2>Contributing</h2>
+</ul><h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <p>Anyone interested or who like the framework idea can contribute by sending new ideas, issues or pull requests. Any help would be appreciated.</p>
 
-<h2>License</h2>
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p>The MIT License</p>
 
 <p>Copyright © 2012 D.G. Shogun <a href="mailto:Shogun147@gmail.com">Shogun147@gmail.com</a></p>
-        </section>
-
-        <aside id="sidebar">
-          <a href="https://github.com/Shogun147/Katana/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/Shogun147/Katana/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
-
-          <p class="repo-owner"><a href="https://github.com/Shogun147/Katana"></a> is maintained by <a href="https://github.com/Shogun147">Shogun147</a>.</p>
-
-          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
-
-            <script type="text/javascript">
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
