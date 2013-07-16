@@ -1,4 +1,4 @@
-[![Katana](https://raw.github.com/Shogun147/Katana/master/katana.jpg)](https://github.com/Shogun147/Katana]
+<a href="https://github.com/Shogun147/Katana"><img src="https://raw.github.com/Shogun147/Katana/master/katana.jpg"/></a>
 
 Easy to use, modular web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.
 
