@@ -279,6 +279,10 @@ Class('Home_Controller', {
 });
 
 module.exports = new Home_Controller;
+
+// to not expose this class as a global, create it as anonymous
+var HomeController = Class({ ... }); module.exports = new HomeController;
+
 ```
 
 And now we can access this `index` action by opening http://katana:8000/, without any uri path this will use default controller and action from config which are `home` and `index`. Also we can access them directly by opening http://katana:8000/`home`/ with `index` as default action or http://katana:8000/`home`/`index`.
@@ -394,18 +398,19 @@ Class('Home_Controller', {
       Response.render('index', { title: 'Hello World' }); // this will render index.html file from views
 
       // get rendered content
-      var content = View.render('index', { title: 'Hello World' });
-      // and latter send response
-      Response.send(content);
+      View.render('index', { title: 'Hello World' }, function(error, content) {
+        // and latter send response
+        Response.send(content);
+      });
 
       // render a view from module
       Users.find({}, function(error, users) {
         if (error) { return Response.send('Error! Blablabla'); }
 
         // again module name separated by colon, and then path to the view
-        var list = View.render('auth:list', users);
-
-        Response.render('index', { users: list });
+        View.render('auth:list', users, function(error, list) {
+          Response.render('index', { users: list });
+        });
       });
     }
   }
@@ -434,12 +439,12 @@ Class('Home_Controller', {
       this.data.total_requests++;
     
       // by render the view with this.render method, the controller data will pass to this view
-      var content = this.render('index'); // <?-title?>, <?-total_requests?>
+      this.render('index', ...); // <?-title?>, <?-total_requests?>
     
       // we may also rewrite globals by set them on render
-      var content = this.render('index', { title: 'This is rewritted title', foo: 'bar' });
-    
-      Response.send(content);
+      this.render('index', { title: 'This is rewritted title', foo: 'bar' }, function(error, content) {
+        Response.send(content);
+      });
     }
   }
 });
@@ -450,6 +455,34 @@ Class('Home_Controller', {
 Katana application emit specific events for different steps.
 Few of them are available for middlewares, the others are for bootstrap control flow.
 
+* `run` - on app initialization, but after bootstrapping
+* `ready` - app is ready and started listening requests
+* `connection` - emits just after the server get a new http.request.
+  the listener will get 3 arguments:
+  - `request` is a `http.IncomingMessage`
+  - `response` is a `http.ServerResponse`
+  - `next` callback so app flow will continue. If is not called then we must send response manually, also no other listeners or controller methods will be runned.
+* `request` - emits after request route is resolve and request data is prepared
+  - `request` is a `Katana.Core.Request`
+  - `response` is a `Katana.Core.Response`
+  - `next` callback
+  `request` and `response` in and after this event are the same as controller methods gets as arguments.
+
+This events could be used to write some middlewares, same as in Express framework.
+```javascript
+// in express
+App.use(function(req, res, next){
+  console.log(req.method, req.url);
+  next();
+});
+
+// in katana
+App.on('request', function(req, res, next) {
+  console.log(req.method, req.uri);
+  next();
+})
+```
+
 For example, `auth` module can listen `request` event to assign a user model for request (see Modules).
 
 Or a `chat` module which need application server to create a socket.io server.
@@ -458,15 +491,15 @@ Or a `chat` module which need application server to create a socket.io server.
 var socket_io = require('socket.io');
 var io;
 
-// ready event is emitted when Http.Server start listening
+// waiting app ready
 App.on('ready', function(callback) {
-      io = socket_io.listen(App.server);
+  io = socket_io.listen(App.server);
     
-      io.sockets.on('connection', function (socket) {
-        // …
-      });
+  io.sockets.on('connection', function (socket) {
+    // …
+  });
     
-      callback();
+  callback();
 });
 ```
 
