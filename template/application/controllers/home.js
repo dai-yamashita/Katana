@@ -1,11 +1,11 @@
-Class('Home_Controller', {
+var HomeController = Class({
   isa: App.Controller,
 	
   methods: {
-	index: function(Response, Request) {
-	  Response.render('index', { title: 'Katana - Easy to use, hmvc scalable web framework for any Node.js samurai.' });
-	}
+  	index: function(Response, Request) {
+  	  Response.render('index', { title: 'Katana - Easy to use, modular web framework for any Node.js samurai.' });
+  	}
   }
 });
 
-module.exports = new Home_Controller;
+module.exports = new HomeController;
