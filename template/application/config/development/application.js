@@ -15,6 +15,7 @@ module.exports = {
 	  extension: '.html',
     open: '<?',
     close: '?>'
+    resolve: true
   },
 	
   cookie: {
