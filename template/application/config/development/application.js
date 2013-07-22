@@ -14,7 +14,7 @@ module.exports = {
     cache: true,
 	  extension: '.html',
     open: '<?',
-    close: '?>'
+    close: '?>',
     resolve: true
   },
 	
