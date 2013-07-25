@@ -575,6 +575,7 @@ Available as `App.Log` you could add more transports or options to it. Check off
 
 ## Examples
 
+* [TodoMVC](https://github.com/Shogun147/TodoMVC) - AngularJS MVC app with RESTful API on backend
 * [ToDo](https://github.com/Shogun147/Katana-ToDo) - Simple todo application
 
 ## Contributing
