@@ -310,7 +310,7 @@ Class('Home_Controller', {
 
       // if the user is not logged in then redirect to login page
       if (!User.logged_in()) {
-        return Request.redirect('/login');
+        return Response.redirect('/login');
       }
 
       // else we call original method
@@ -342,7 +342,7 @@ Class('Home_Controller', {
 
       // if the user is not logged in then redirect to login page
       if (!User.logged_in()) {
-        return Request.redirect('/login');
+        return Response.redirect('/login');
       }
 
       // else we call original method

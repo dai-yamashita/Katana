@@ -292,7 +292,7 @@ Class('Home_Controller', {
 
       // ユーザがログインしていない場合、次のログインページにリダイレクト
       if (!User.logged_in()) {
-        return Request.redirect('/login');
+        return Response.redirect('/login');
       }
 
       // 他に、元のメソッドを呼び出す
