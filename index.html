@@ -1,38 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Katana by Shogun147</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <title>Katana by Shogun147</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Katana</h1>
-        <p class="header">Easy to use, modular web framework for any Node.js samurai</p>
+    <header>
+      <div class="inner">
+        <h1>Katana</h1>
+        <h2>Easy to use, modular web framework for any Node.js samurai</h2>
+        <a href="https://github.com/Shogun147/Katana" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/Shogun147/Katana/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/Shogun147/Katana/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/Shogun147/Katana">View On GitHub</a></li>
-        </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Shogun147">Shogun147</a></p>
-
-
-      </header>
-      <section>
-        <h1>
-<a name="katana" class="anchor" href="#katana"><span class="octicon octicon-link"></span></a><a href="https://github.com/Shogun147/Katana">Katana</a>
-</h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><a href="https://github.com/Shogun147/Katana"><img src="https://raw.github.com/Shogun147/Katana/master/katana.jpg"></a></p>
 
 <p>Easy to use, modular web framework for any Node.js samurai, focuses on simplicity, maintainability and performance.</p>
 
@@ -295,10 +291,10 @@ Examples of install:</p>
 <ul>
 <li><code>katana module install auth</code></li>
 <li><code>katana module install auth@0.1.0</code></li>
-<li><code>katana module install Shogun147:Katana-auth</code></li>
-<li><code>katana module install Shogun147:Katana-auth@0.1.0</code></li>
-<li><code>katana module install https://github.com/Shogun147/Katana-auth/tarball/master</code></li>
-<li><code>katana module install http://my-site.com/downloads/module/v1.0.5</code></li>
+<li><code>katana module install auth Shogun147:Katana-auth</code></li>
+<li><code>katana module install auth Shogun147:Katana-auth@0.1.0</code></li>
+<li><code>katana module install auth https://github.com/Shogun147/Katana-auth/tarball/master</code></li>
+<li><code>katana module install auth http://my-site.com/downloads/module/v1.0.5</code></li>
 </ul>
 </li>
 <li><p><code>katana module uninstall &lt;name&gt;</code> - uninstall and remove module</p></li>
@@ -328,6 +324,10 @@ The hooks are useful when there is a need to do something unique on this actions
 <span class="p">});</span>
 
 <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Home_Controller</span><span class="p">;</span>
+
+<span class="c1">// to not expose this class as a global, create it as anonymous</span>
+<span class="kd">var</span> <span class="nx">HomeController</span> <span class="o">=</span> <span class="nx">Class</span><span class="p">({</span> <span class="p">...</span> <span class="p">});</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">HomeController</span><span class="p">;</span>
+
 </pre></div>
 
 <p>And now we can access this <code>index</code> action by opening http://katana:8000/, without any uri path this will use default controller and action from config which are <code>home</code> and <code>index</code>. Also we can access them directly by opening http://katana:8000/<code>home</code>/ with <code>index</code> as default action or http://katana:8000/<code>home</code>/<code>index</code>.</p>
@@ -440,18 +440,19 @@ The hooks are useful when there is a need to do something unique on this actions
       <span class="nx">Response</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span> <span class="c1">// this will render index.html file from views</span>
 
       <span class="c1">// get rendered content</span>
-      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">});</span>
-      <span class="c1">// and latter send response</span>
-      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+      <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'Hello World'</span> <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// and latter send response</span>
+        <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+      <span class="p">});</span>
 
       <span class="c1">// render a view from module</span>
       <span class="nx">Users</span><span class="p">.</span><span class="nx">find</span><span class="p">({},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Error! Blablabla'</span><span class="p">);</span> <span class="p">}</span>
 
         <span class="c1">// again module name separated by colon, and then path to the view</span>
-        <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'auth:list'</span><span class="p">,</span> <span class="nx">users</span><span class="p">);</span>
-
-        <span class="nx">Response</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">users</span><span class="o">:</span> <span class="nx">list</span> <span class="p">});</span>
+        <span class="nx">View</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'auth:list'</span><span class="p">,</span> <span class="nx">users</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">Response</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">users</span><span class="o">:</span> <span class="nx">list</span> <span class="p">});</span>
+        <span class="p">});</span>
       <span class="p">});</span>
     <span class="p">}</span>
   <span class="p">}</span>
@@ -479,12 +480,12 @@ The hooks are useful when there is a need to do something unique on this actions
       <span class="k">this</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">total_requests</span><span class="o">++</span><span class="p">;</span>
 
       <span class="c1">// by render the view with this.render method, the controller data will pass to this view</span>
-      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">);</span> <span class="c1">// &lt;?-title?&gt;, &lt;?-total_requests?&gt;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">...);</span> <span class="c1">// &lt;?-title?&gt;, &lt;?-total_requests?&gt;</span>
 
       <span class="c1">// we may also rewrite globals by set them on render</span>
-      <span class="kd">var</span> <span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'This is rewritted title'</span><span class="p">,</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'bar'</span> <span class="p">});</span>
-
-      <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'index'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">title</span><span class="o">:</span> <span class="s1">'This is rewritted title'</span><span class="p">,</span> <span class="nx">foo</span><span class="o">:</span> <span class="s1">'bar'</span> <span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">content</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Response</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+      <span class="p">});</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">});</span>
@@ -496,6 +497,56 @@ The hooks are useful when there is a need to do something unique on this actions
 <p>Katana application emit specific events for different steps.
 Few of them are available for middlewares, the others are for bootstrap control flow.</p>
 
+<ul>
+<li>
+<code>run</code> - on app initialization, but after bootstrapping</li>
+<li>
+<code>ready</code> - app is ready and started listening requests</li>
+<li>
+<code>connection</code> - emits just after the server get a new http.request.
+the listener will get 3 arguments:
+
+<ul>
+<li>
+<code>request</code> is a <code>http.IncomingMessage</code>
+</li>
+<li>
+<code>response</code> is a <code>http.ServerResponse</code>
+</li>
+<li>
+<code>next</code> callback so app flow will continue. If is not called then we must send response manually, also no other listeners or controller methods will be runned.</li>
+</ul>
+</li>
+<li>
+<code>request</code> - emits after request route is resolve and request data is prepared
+
+<ul>
+<li>
+<code>request</code> is a <code>Katana.Core.Request</code>
+</li>
+<li>
+<code>response</code> is a <code>Katana.Core.Response</code>
+</li>
+<li>
+<code>next</code> callback
+<code>request</code> and <code>response</code> in and after this event are the same as controller methods gets as arguments.</li>
+</ul>
+</li>
+</ul><p>This events could be used to write some middlewares, same as in Express framework.</p>
+
+<div class="highlight"><pre><span class="c1">// in express</span>
+<span class="nx">App</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+  <span class="nx">next</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="c1">// in katana</span>
+<span class="nx">App</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'request'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">method</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">uri</span><span class="p">);</span>
+  <span class="nx">next</span><span class="p">();</span>
+<span class="p">})</span>
+</pre></div>
+
 <p>For example, <code>auth</code> module can listen <code>request</code> event to assign a user model for request (see Modules).</p>
 
 <p>Or a <code>chat</code> module which need application server to create a socket.io server.</p>
@@ -503,15 +554,15 @@ Few of them are available for middlewares, the others are for bootstrap control 
 <div class="highlight"><pre><span class="kd">var</span> <span class="nx">socket_io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'socket.io'</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">io</span><span class="p">;</span>
 
-<span class="c1">// ready event is emitted when Http.Server start listening</span>
+<span class="c1">// waiting app ready</span>
 <span class="nx">App</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">io</span> <span class="o">=</span> <span class="nx">socket_io</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">server</span><span class="p">);</span>
+  <span class="nx">io</span> <span class="o">=</span> <span class="nx">socket_io</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">App</span><span class="p">.</span><span class="nx">server</span><span class="p">);</span>
 
-      <span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'connection'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// …</span>
-      <span class="p">});</span>
+  <span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'connection'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// …</span>
+  <span class="p">});</span>
 
-      <span class="nx">callback</span><span class="p">();</span>
+  <span class="nx">callback</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
 
@@ -592,6 +643,8 @@ Available as <code>App.Log</code> you could add more transports or options to it
 
 <ul>
 <li>
+<a href="https://github.com/Shogun147/TodoMVC">TodoMVC</a> - AngularJS MVC app with RESTful API on backend</li>
+<li>
 <a href="https://github.com/Shogun147/Katana-ToDo">ToDo</a> - Simple todo application</li>
 </ul><h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
@@ -603,14 +656,27 @@ Available as <code>App.Log</code> you could add more transports or options to it
 
 <p>The MIT License</p>
 
-<p>Copyright © 2012 D.G. Shogun <a href="mailto:Shogun147@gmail.com">Shogun147@gmail.com</a></p>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
+<p>Copyright © 2013 D.G. Shogun <a href="mailto:Shogun147@gmail.com">Shogun147@gmail.com</a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/Shogun147/Katana/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/Shogun147/Katana/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/Shogun147/Katana"></a> is maintained by <a href="https://github.com/Shogun147">Shogun147</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
+
+            <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
           </script>
