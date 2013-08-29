@@ -8,7 +8,7 @@
     { "name": "Shogun", "email": "Shogun147@gmail.com" }
   ],
 
-  "keywords": ["katana", "framework", "mvc", "hmvc", "oop", "router", "web", "development"],
+  "keywords": ["katana", "framework", "mvc", "hmvc", "oop", "router", "web", "development", "api", "rest", "restful"],
   
   "homepage": "http://katanajs.com/ (comming soon)",
 
