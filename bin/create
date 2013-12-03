@@ -59,8 +59,8 @@ App.command('create [path]')
       },
       function(callback) {
         var paths = [
-          path + 'application/config/production', 
-          path + 'application/models',
+          path + 'app/config/production', 
+          path + 'app/models',
           path + 'public/images', 
           path + 'public/scripts', 
           path + 'public/css',

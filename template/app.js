@@ -1,1 +1,2 @@
+require('joose');
 require('katana');
