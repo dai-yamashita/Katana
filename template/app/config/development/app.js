@@ -1,6 +1,7 @@
-var Fs = require('fs');
+var Path = require('path');
+var Fs   = require('fs');
 
-var root = process.cwd() + '/';
+var root = process.cwd() + Path.sep;
 
 module.exports = {
   url: 'localhost',
@@ -83,7 +84,7 @@ module.exports = {
 
     maxFields: 1000,
     maxFieldsSize: 2 * 1024 * 1024,
-    uploadDir: root + 'temp/files',
+    uploadDir: Path.join(root, 'temp', 'files'),
     keepExtensions: false,
     encoding: 'utf-8',
 

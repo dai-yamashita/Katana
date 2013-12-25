@@ -1,0 +1,95 @@
+#!/usr/bin/env node
+
+var Path = require('path');
+var Fs   = require('fs');
+
+var inherits = require('util').inherits;
+var spawn    = require('child_process').spawn;
+
+var fs     = require('../lib/fs');
+var mkdir  = fs.mkdir;
+
+require('colors');
+
+var node    = process.execPath;
+var root    = process.cwd() + Path.sep;
+var modRoot = Path.join(__dirname, '..') + Path.sep;
+var isWin   = process.platform === 'win32';
+var eol     = require('os').EOL;
+var sep     = Path.sep;
+
+var modules = require('../modules');
+
+function AppError(message) {
+  Error.apply(this, arguments);
+  this.name = 'AppError';
+  this.message = message || '';
+}
+inherits(AppError, Error);
+
+process.on('uncaughtException', function(error) {
+  if (error instanceof AppError) {
+    console.error('  Error:'.red, error.message);
+  } else {
+    console.error(error.stack || error.message || error);
+  }
+  //process.stdin.pause();
+  process.exit(1);
+});
+
+var App = require('commander');
+
+App.command('controller <name>')
+.description('create new controller')
+.action(function(controller, action) {
+  var module  = 'app';
+  var path    = 'app'+ sep +'controllers';
+  var name    = Path.basename(controller);
+  var actions = action.parent.rawArgs.slice(4);
+
+  if (controller.indexOf(':') !== -1) {
+    controller = controller.split(':');
+    module     = controller[0];
+    controller = controller[1];
+    path       = ['modules', module, 'controllers'].join(sep);
+
+    if (!modules[module]) {
+      throw new AppError('Module not found!');
+    }
+  }
+
+  path = Path.join(root, path, Path.dirname(controller));
+
+  actions = actions.map(function(method) {
+    return '    '+ method + ': function(request, response) {      '+ eol+eol +'    }'; 
+  });
+
+  var content = [
+    'var '+ name +'Controller = Class({',
+    '  isa: App.Controller,'+ eol,
+    '  methods: {',
+        actions.join(','+ eol+eol),
+    '  }',
+    '});'+ eol,
+    'module.exports = new '+ name +'Controller;'+ eol
+  ].join(eol);
+
+  mkdir(path, function(error) {
+    if (error) {
+      throw new AppError('Failed to create controller directory!');
+    }
+
+    path = Path.join(path, name + '.js');
+    Fs.exists(path, function(exists) {
+      if (exists) { throw new AppError('This controller already exists!'); }
+
+      Fs.writeFile(path, content, function(error) {
+        if (error) { throw error; }
+
+        console.log('  Done!'.green, 'Controller', Path.relative(root, path).blue, 'created!');
+      });
+    });
+  });
+});
+
+App.parse(process.argv);

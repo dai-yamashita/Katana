@@ -1,72 +1,139 @@
 #!/usr/bin/env node
 
-var Path     = require('path');
-var Fs       = require('fs');
-var spawn    = require('child_process').spawn;
+var Path = require('path');
+var Fs   = require('fs');
 
-var mod_root = Path.normalize(__dirname + '/../');
-var root     = process.cwd() + Path.sep;
-var eol      = require('os').EOL;
-
-var Async    = require('async');
-var request  = require('request');
-var mkdir    = require('mkdirp');
-var colors   = require('colors');
-var copy     = require('../lib/utils').copy;
-var rand_str = require('../lib/utils').rand_str;
-var load     = require('../lib/utils').load;
-var remove   = require('../lib/utils').remove;
-var check    = require('../lib/utils').validator;
+var request = require('request');
+var async   = require('async');
+var semver  = require('semver');
 
 var zlib = require('zlib');
 var tar  = require('tar');
 var gzip = zlib.createUnzip();
 
-var semver = require('semver');
+var inherits = require('util').inherits;
+var spawn    = require('child_process').spawn;
+var utils    = require('../lib/utils');
+var confirm  = utils.confirm;
+var check    = utils.validator;
 
-var info    = require(mod_root +'package.json');
-var modules = require(mod_root +'modules.json');
+var fs     = require('../lib/fs');
+var mkdir  = fs.mkdir;
+var copy   = fs.copy;
+var walk   = fs.walk;
+var find   = fs.find;
+var move   = fs.move;
+var remove = fs.remove;
+
+require('colors');
+
+var node    = process.execPath;
+var root    = process.cwd() + Path.sep;
+var modRoot = Path.join(__dirname, '..') + Path.sep;
+var isWin   = process.platform === 'win32';
+var eol     = require('os').EOL;
+var sep     = Path.sep;
+
+var modules = require('../modules');
+
+function AppError(message) {
+  Error.apply(this, arguments);
+  this.name = 'AppError';
+  this.message = message || '';
+}
+inherits(AppError, Error);
+
+process.on('uncaughtException', function(error) {
+  if (error instanceof AppError) {
+    console.error('  Error:'.red, error.message);
+  } else {
+    console.error(error.stack || error.message || error);
+  }
+  //process.stdin.pause();
+  process.exit(1);
+});
 
 var App = require('commander');
 
-App.version(info.version);
-
-var Err = function(message) {
-  console.log(eol, message);
-
-  process.exit();
-}
-
-App.command('modules')
-.description('list all available modules')
+App.command('list')
+.description('list available modules')
 .action(function() {
-  var pack;
-  var total = 0;
+  var meta = {
+    total: Object.keys(modules).length,
+    installed: 0,
+    enabled: 0
+  };
 
+  var pack = null;
   try {
-    pack = require(root +'package.json').katana;
+    pack = (require(Path.join(root, 'package.json'))).katana;
   } catch(error) {}
 
+  var i = 0;
   for (var name in modules) {
-    total++;
-
     var module    = modules[name];
+    var installed = pack && pack.modules[name]!== undefined;
+    var enabled   = pack && pack.modules[name]!==undefined && pack.modules[name].enabled;
 
-    console.log('\n#'+ total, name, '-', module.description);
-    console.log('   author:', module.author.name, '<'+ module.author.email +'>');
-    console.log('     tags:', module.tags.length ? module.tags.join(' ') : 'no tags, download master branch');
+    module.tags.reverse();
+    installed && meta.installed++;
+    enabled && meta.enabled++;
 
-    if (pack !== undefined) {
-      var installed = pack.modules[name] !== undefined;
-      var enabled   = pack.modules[name]!==undefined && pack.modules[name].enabled===true;
+    var url = module.url || (['https://github.com', module.github.username, module.github.repository, 'tarball', module.tags[0] || 'master'].join('/'));
 
-      console.log('           installed:', installed ? 'true'.green : 'false'.yellow, ' enabled:', enabled ? 'true'.green : 'false'.yellow);
+    console.log('\n  #'.grey + ++i, name, (installed ? '■installed'.blue : '') + (enabled ? ' ■enabled'.green : ''));
+    console.log('      title:'.grey, module.description);
+    console.log('     author:'.grey, module.author.name, '<'+ module.author.email +'>');
+    console.log('        url:'.grey, url);
+    console.log('       tags:'.grey, module.tags.length ? module.tags.join(' ■ ') : 'master');
+  }
+
+  // meta.total && console.log('\n  ■Total:'.blue + meta.total, '■Installed:'.magenta + meta.installed, '■Enabled:'.green + meta.enabled);
+
+  console.log(!meta.total ? '\n  **There are no available modules**\n'.grey : '');
+  !meta.total && console.log('  Tip:'.blue +' run "'.grey +'katana modules update'.green +'" - to update modules list and info.'.grey, '\n');
+});
+
+App.command('search <query>')
+.description('search modules')
+.action(function(query) {
+  var meta = {
+    total: 0,
+    installed: 0,
+    enabled: 0
+  };
+
+  var pack = null;
+  try {
+    pack = (require(Path.join(root, 'package.json'))).katana;
+  } catch(error) {}
+
+  var i = 0;
+  for (var name in modules) {
+    var module = modules[name];
+    var regexp = new RegExp(query, 'ig');
+
+    if (regexp.test(name) || regexp.test(module.description)) {
+      var installed = pack && pack.modules[name]!==undefined;
+      var enabled   = pack && pack.modules[name]!==undefined && pack.modules[name].enabled;
+
+      meta.total++;
+      module.tags.reverse();
+      installed && meta.installed++;
+      enabled && meta.enabled++;
+
+      var url = module.url || (['https://github.com', module.github.username, module.github.repository, 'tarball', module.tags[0] || 'master'].join('/'));
+
+      console.log('\n  #'.grey + ++i, name, (installed ? '■installed'.blue : '') + (enabled ? ' ■enabled'.green : ''));
+      console.log('      title:'.grey, module.description);
+      console.log('     author:'.grey, module.author.name, '<'+ module.author.email +'>');
+      console.log('        url:'.grey, url);
+      console.log('       tags:'.grey, module.tags.length ? module.tags.join(' ■ ') : 'master');
     }
   }
 
-  if (!total) {
-    console.log('There are no modules available.');
-  }
+  console.log(!meta.total ? '\n  **No modules found which match "'.grey+ query +'"**\n'.grey : '');
+  !meta.total && console.log('  Tip:'.blue +' run "'.grey +'katana modules update'.green +'" - to update modules list and info.'.grey, '\n');
 });
 
 App.command('update')
@@ -74,380 +141,336 @@ App.command('update')
 .action(function() {
   var url = 'https://raw.github.com/Shogun147/Katana/master/modules.json';
 
-  request(url).on('response', function(response) {
-    if (response.statusCode !== 200 && response.statusCode !== 304) {
-      return Err('Error: url not found or error while downloading it.');
+  console.log('  Downloading:', url);
+  request({ url: url, timeout: 5000 })
+  .on('response', function(response) {
+    if (response.statusCode!==200 && response.statusCode!==304) {
+      throw new AppError('Request failed with status code '+ response.statusCode.toString().blue +'!');
     }
-  }).pipe(Fs.createWriteStream(mod_root + 'modules.json')).on('error', function(error) {
-    Err(error);
-  }).on('error', function(error) {
-    Err(error);
-  }).on('end', function() {
-    console.log('Done! Run "katana modules" to view updated modules list.');
 
-    process.exit();
+    this.pipe(Fs.createWriteStream(modRoot + 'modules.json')
+    .on('finish', function() {
+      console.log('  Done!'.green, 'Run', '"katana modules"'.blue, 'to list modules.');
+    })).on('error', function(error) {
+      throw new AppError('Updating failed with '+ (error.message || error.toString).yellow +'.');
+    });
+  }).on('error', function(error) {
+    throw new AppError(error.code === 'ETIMEDOUT' ? 'Request timeout!' : 'Request failed with '+ error.code.yellow +'!');
   });
 });
-
-App.command('search <contain>')
-.description('search modules')
-.action(function(contain) {
-  var pack;
-  var total = 0;
-
-  try {
-    pack = require(root +'package.json').katana;
-  } catch(error) {}
-
-  for (var name in modules) {
-    var module = modules[name];
-  
-    var regexp = new RegExp(contain, 'ig');
-
-    if (regexp.test(module.name) || regexp.test(module.description)) {
-      total++;
-
-      console.log('#'+ total, name, '-', module.description);
-      console.log('  author:', module.author.name, '<'+ module.author.email +'>');
-      console.log('    tags:', module.tags.length ? module.tags.join(' ') : 'no tags, download master branch');
-
-      if (pack !== undefined) {
-        var installed = pack.modules[name] !== undefined;
-        var enabled   = pack.modules[name]!==undefined && pack.modules[name].enabled===true;
-
-        console.log('          installed:', installed ? 'true'.green : 'false'.yellow, ' enabled:', enabled ? 'true'.green : 'false'.yellow);
-      }
-    }
-  }
-
-  if (!total) {
-    console.log('  There are no modules that match your search request.');
-  }
-});
-
-// name@version               - installs from modules.json registry, optional version
-// name username:name@version - install from github username and repo-name, optional version
-// name url                   - install as name from url
 
 App.command('install <name> [url]')
 .description('install or reinstall application module')
 .action(function(name, url) {
   var ProgressBar = require('progress');
-  var Bar;
+  var Bar         = null;
+  var req         = null;
+  var username    = null;
+  var version     = null;
 
-  var username, version;
+  try {
+    var pack = require(Path.join(root, 'package')).katana;
+    !pack.modules && (pack.modules = {});
+  } catch(error) {
+    throw new AppError('Not a Katana application!');
+  }
 
-  if ((!check(url, 'isUrl') || !url) && name.indexOf('@') !== -1) {
-    name = name.split('@');
-
+  if ((!url || !check(url, 'isUrl')) && name.indexOf('@') !== -1) {
+    name    = name.split('@');
     version = name[1];
     name    = name[0];
 
     if (!semver.valid(version)) {
-      return Err('Error:'.red, ' invalid version!');
+      throw new AppError('Invalid version!');
     }
   }
 
   if (url && !check(url, 'isUrl')) {
     if (url.indexOf(':') === -1) {
-      return Err('Error:'.red, ' invalid url or github username:repository!');
+      throw new AppError('Invalid url or Github username:repository!')
     }
 
     var repository = url.split(':');
-
-    username = repository[0];
-    repository = repository[1];
+    username       = repository[0];
+    repository     = repository[1];
 
     if (!repository) {
-      return Err('Error: invalid repository name!');
+      throw new AppError('Invalid repository name!');
     }
 
     if (repository.indexOf('@') !== -1) {
-      version = repository.split('@')[1];
+      version    = repository.split('@')[1];
       repository = repository.split('@')[0];
 
       if (!semver.valid(version)) {
-        return Err('Error: invalid version!');
+        throw new AppError('Invalid version!');
       }
     }
 
-    url = 'https://github.com/'+ username +'/'+ repository +'/tarball/'+ (version || 'master');
+    url = ['https://github.com', username, repository, 'tarball', version || 'master'].join('/');
   }
 
-  check_installed(name, function(ok, exists) {
-    if(!ok) { return process.exit(); }
+  async.series([
+    function(next) {
+      if (!pack.modules[name]) { return next(); }
 
-    if (!username && !url && !modules[name]) {
-      return Err('Error: Module ['+ name +'] not found!')
-    }
+      confirm('  Warning: '.yellow + 'This module is already installed, do you want to replace it? ', function(error, ok) {
+        if (!ok) { process.exit(); }
 
-    if (!username && !url) {
-      var module = modules[name];
-
-      if (version && module.tags.indexOf(version) === -1) {
-        return Err('Error: there\'s no '+ version +' version for module ['+ name +']');
+        var isFile = !Fs.existsSync(Path.join(root, 'modules', name));
+        remove(Path.join(root, 'modules', name + (isFile ? '.js' : '')), next);
+      });
+    },
+    function(next) {
+      if (!username && !url && !modules[name]) {
+        return next('Module '+ name.blue +' not found!');
       }
 
-      if (!version && module.tags.length) {
-        version = module.tags.pop();
+      if (!username && !url) {
+        var module = modules[name];
+        if (version && module.tags.indexOf(version) === -1) {
+          return next('There\'s no '+ version.blue +' version for module '+ name.blue +'!');
+        }
+        if (!version && module.tags.length) {
+          version = module.tags.pop();
+        }
+        if (module.url) {
+          url = module.url.replace(':version', version || 'master');
+        } else {
+          url = ['https://github.com', module.github.username, module.github.repository, 'tarball', version || 'master'].join('/');
+        }
       }
 
-      url = module.url ? module.url + (version || 'master') : 'https://github.com/'+ module.github.username +'/'+ module.github.repository +'/tarball/'+ (version || 'master');
-    }
-
-    console.log('    name: ', name);
-    console.log(' version: ', version);
-    console.log('username: ', username);
-    console.log('     url: ', url);
-
-    mkdir(root + 'temp/modules/'+ name, 0777, function(error) {
-      if (error) { return Err('Error: could not create temporary directory.\n'+ error); }
-
-      request({ url: url })
+      next();
+    },
+    function(next) {
+      mkdir(Path.join(root, 'temp', 'modules', name), 0777, next);
+    },
+    function(next) {
+      console.log('  Downloading:', url.blue);
+      req = request({ url: url, timeout: 10000 })
+      .on('error', function(error) {
+        next(error.code==='ETIMEDOUT' ? 'Request timeout!' : error);
+      })
       .on('response', function(response) {
         if (response.statusCode !== 200 && response.statusCode !== 304) {
           this.abort();
-
-          return Err('Error: module not found! Server responded with status code: '+ response.statusCode);
+          return next('Module request failed! Server responded with '+ response.statusCode.toString().blue +'.');
         }
 
         if (response.headers['content-type'] !== 'application/x-gzip') {
           this.abort();
-
-          return Err('Error: the server should respond with content-type application/x-gzip, '+ response.headers['content-type'] +' given.');
+          return next('Module request failed! Unexpected content type, module must be gzipped tar-ball.');
         }
 
-        var length = parseInt(response.headers['content-length'], 10);
-
-        Bar = new ProgressBar('\n  downloading [:bar] :percent :etas', {
+        Bar = new ProgressBar('               :etas'.blue +' [:bar] ' + ':percent'.green + eol, {
           complete: '=',
           incomplete: ' ',
           width: 40,
-          total: length
+          total: parseInt(response.headers['content-length'], 10)
         });
-      }).on('data', function(chunk) {
-        if (this._aborted) { return; }
 
-        Bar.tick(chunk.length);
-      }).pipe(zlib.createUnzip()).on('error', function(error) {
-        Err('Error: \n'+ error);
-      }).pipe(tar.Extract({ path: root +'temp/modules/'+ name })).on('error', function(error) {
-        Err('Error: \n'+ error);
-      }).on('end', function() {
-        Fs.readdir(Path.join(root, 'temp', 'modules', name), function(error, items) {
-          if (error || !items.length) { return Err('Error: '+ (error ? eol + error : 'module extracting failed!')); }
-    
-          var tmp = items[0];
-          var is_file = false;
+        req.on('data', function(chunk) {
+          Bar.tick(chunk.length);
+        });
 
-          Fs.readdir(Path.join(root, 'temp', 'modules', name, tmp), function(error, items) {
-            var pending = items.length;
+        function abort() {
+          req.abort();
+          next('Extracting failed!');
+        }
 
-            Async.series([
-              function(callback) {
-                if (pending === 1) {
-                  var item = items[0];
+        var zlibStream = zlib.createUnzip();
+        var tarStream  = tar.Extract({ path: Path.join(root, 'temp', 'modules', name) });
 
-                  is_file = true;
+        zlibStream.on('error', abort);
+        tarStream.on('error', abort).on('end', next);
 
-                  copy(root +'temp/modules/'+ name +'/'+ tmp +'/'+ item, root +'modules/'+ item, function(error) {
-                    callback(error);
-                  });
-                } else {
-                  Fs.mkdir(Path.join(root, 'modules', name), 0777, function(error) {
-                    if (error) { return callback(error); }
+        req.pipe(zlibStream);
+        zlibStream.pipe(tarStream);
+      });
+    },
+    function(next) {
+      var path = Path.join(root, 'temp', 'modules', name);
+      Fs.readdir(path, function(error, item) {
+        if (error || !item.length) { return next(error || 'Extracting failed or module archive empty.'); }
 
-                    items.forEach(function(item) {
-                      copy(root +'temp/modules/'+ name +'/'+ tmp +'/'+ item, root +'modules/'+ name +'/'+ item, function(error) {
-                        if (error) { console.log(error); }
+        var isFile = Path.extname(item[0]) === '.js';
 
-                        if (!--pending) {
-                          callback();
-                        }
-                      });
-                    });
-                  });
-                }
-              },
-              function(callback) {
-                remove(root +'temp/modules/'+ name, function(error) {
-                  if (error) { console.log('Warning:'.magento, 'could not remove temporary directory.'); }
+        move(Path.join(path, item[0]), Path.join(root, 'modules', name + (isFile ? '.js' : '')), next);
+      });
+    },
+    function(next) {
+      remove(Path.join(root, 'temp', 'modules', name), function(error) {
+        if (error) { console.log('Error: Failed to remove temp directory!'); }
 
-                  callback();
-                });
-              },
-              function(callback) {
-                if (is_file) { return callback(); }
+        next();
+      });
+    },
+    function(next) {
+      if (isWin) { return next(); }
 
-                Fs.readdir(Path.join(root, 'modules', name, 'hooks'), function(error, hooks) {
-                  if (error) { return callback(); }
+      var path = Path.join(root, 'modules', name, 'hooks');
 
-                  var pending = hooks.length;
+      Fs.readdir(path, function(error, hooks) {
+        if (error) { return next(error.code==='ENOENT' ? null : error); }
 
-                  if (!pending) { return callback(); }
+        async.each(hooks, function(hook, cb) {
+          Fs.chmod(Path.join(path, hook), 0755, function(error) {
+            if (error) {
+              console.log('  Warning:'.yellow, 'Failed to make hook '+ hook.blue +' executable!');
+            }
 
-                  hooks.forEach(function(hook) {
-                    Fs.chmod(Path.join(root, 'modules', name, 'hooks', hook), '+x', function(error) {
-                      if (error) { console.log('Warning:'.magento, 'could not make hook "'+ hook +'" executable.'); }
-
-                      if (!--pending) {
-                        callback();
-                      }
-                    });
-                  });
-                });
-              },
-              function(callback) {
-                run_hook('install', name, function(error) {
-                  if (error) { console.log('Error while running install hook:\n', error); }
-
-                  callback();
-                });
-              }
-            ], function(error) {
-              if (error) {
-                return Err(error);
-              }
-
-              var pack = require(root +'package.json');
-
-              var v;
-
-              try {
-                var v = require(root +'modules/'+ name +'/package.json').version;
-              } catch(error) {}
-
-              pack.katana.modules[name] = {
-                version: v || version || null,
-                enabled: false
-              }
-
-              Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
-                console.log('\nModule "'+ name +'" now installed! Run "katana module enable '+ name +'" to enable it.');
-
-                process.exit();
-              });
-            });
+            cb();
           });
+        }, next);
+      });
+    },
+    function(next) {
+      return next();
+
+      var path = Path.join(__dirname, 'modules', 'auth');
+
+      process.chdir(path);
+      require('npm').load(function(error, Npm) {
+        Npm.config.set('logLevel', 'info')
+        .on('log', function(message) {
+          console.log(message);
+        }).install(function(error) {
+          console.log(arguments);
+          process.chdir(root);
         });
       });
-    });
+    },
+    function(next) {
+      runHook('install', name, function(code, signal) {
+        if (code) {
+          // TODO: need some more descriptive message here
+          console.log('  Warning:'.yellow, 'Install hook exited with code', code.blue +'!');
+        }
+
+        next();
+      });
+    },
+    function(next) {
+      var pack = require(root + 'package.json');
+
+      pack.katana.modules[name] = {
+        version: version || 'master',
+        enabled: false
+      };
+
+      Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
+        if (error) {
+          console.log('  Warning:'.yellow, 'Failed to update package.json file with new installed module.');
+        }
+
+        next();
+      });
+    }
+  ], function(error) {
+    if (error) {
+      if (error instanceof Error) {
+        throw error;
+      } else { throw new AppError(error); }
+    }
+
+    console.log('  Done!'.green, 'Module', name.blue, 'installed!');
+    console.log('  Run', '"katana module enable '.blue+ name.blue +'"'.blue, 'to enable this module.');
+
+    // find where we still have stdin opened
+    process.stdin.pause();
   });
 });
 
-function check_installed(name, callback) {
-  Fs.exists(Path.join(root, 'modules', name), function(exists) {
-    if (!exists) {
-      return callback(true, false);
-    }
-
-    App.confirm('Module '+ name +' already installed, did you want to continue and rewrite old one? [Yes|No] ', function(ok) {
-      remove(root +'modules/'+ name, function(error) {
-        if (error) {
-          return Err('Error:'.red, 'could not remove existing module directory!');
-        }
-
-        callback(ok, true);
-      });
-    });
-  });
-}
-
 App.command('enable <name>')
 .description('enable module')
-.action(function(module) {
-  run_hook('enable', module, function(error) {
-    if (error) { return Err(error); }
-
-    var pack = require(root +'package.json');
-
-    pack.katana.modules[module].enabled = true;
-
-    Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
-      if (error) { return Err(error); }
-
-      console.log('Done! Module "'+ module +'" now', 'enabled'.green, '!');
-    });
-  });
+.action(function(name) {
+  toggleModule(name, 'enable');
 });
 
 App.command('disable <name>')
 .description('disable module')
-.action(function(module) {
-  run_hook('disable', module, function(error) {
-    if (error) { return Err(error); }
+.action(function(name) {
+  toggleModule(name, 'disable');
+});
 
-    var pack = require(root +'package.json');
+function toggleModule(name, action) {
+  var pack = require(root + 'package.json');
 
-    pack.katana.modules[module].enabled = false;
+  if (!pack.katana.modules[name]) {
+    throw new AppError('This module is not installed!');
+  }
 
-    Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
-      if (error) { return Err(error); }
+  runHook(action, name, function(code) {
+    if (code) {
+      console.log('  Warning:'.yellow, action +' hook exited with code', code.toString().blue +'!');
+    }
 
-      console.log('Done! Module "'+ module +'" now', 'disabled'.yellow, '!');
+    pack.katana.modules[name].enabled = action === 'enable';
+
+    Fs.writeFile(root + 'package.json', JSON.stringify(pack, null, 2), function(error) {
+      if (error) { throw error; }
+
+      console.log('Done! Module', name.blue, 'now', (action==='enable' ? 'enabled'.green : 'disabled'.yellow) +'.');
     });
   });
-});
+}
 
 App.command('uninstall <name>')
-.description('remove module')
-.action(function(module) {
-  run_hook('uninstall', module, function(error) {
-    if (error) { return Err(error); }
+.description('uninstall module')
+.action(function(name) {
+  var pack = require(root + 'package.json');
 
-    var path = Path.join(root, 'modules', module);
+  if (!pack.katana.modules[name]) {
+    throw new AppError('This module is not installed!');
+  }
 
-    if (Fs.existsSync(path +'.js')) {
-      path += '.js';
+  runHook('uninstall', name, function(code) {
+    if (code) {
+      console.log('  Warning:'.yellow, 'Uninstall hook exited with code', code.toString().blue +'!');
     }
 
-    remove(path, function(error) {
-      if (error) { return Err(error); }
+    var isFile = !Fs.existsSync(Path.join(root, 'modules', name));
+    remove(Path.join(root, 'modules', name + (isFile ? '.js' : '')), function(error) {
+      if (error) {
+        console.log('  Warning:'.yellow, 'Error removing module directory.');
+      }
 
-      var pack = require(root +'package.json');
+      delete pack.katana.modules[name];
 
-      delete pack.katana.modules[module];
-
-      Fs.writeFile(root +'package.json', JSON.stringify(pack, null, 2), function(error) {
-        if (error) { return Err(error); }
-
-        console.log('Done! Module "'+ module +'"', 'removed'.red, '!');
+      Fs.writeFile(root + 'package.json', JSON.stringify(pack, null, 2), function(error) {
+        console.log('  Done!'.green, 'Module', name.blue, 'uninstalled!');
       });
-    })
+    });
   });
 });
 
-var run_hook = function(name, module, callback) {
-  Fs.exists(Path.join(root, 'modules', module, 'hooks', name +'.js'), function(exists) {
-    if (!exists) { return callback(); }
+function runHook(hook, module, next) {
+  hook = Path.join(root, 'modules', module, 'hooks', hook);
+  hook = Fs.existsSync(hook) ? hook : (Fs.existsSync(hook +'.js') ? hook +'.js' : null);
 
-    var hook = spawn('node', [Path.join(root, 'modules', module, 'hooks', name +'.js')], {
-      cwd: root,
-      stdio: 'inherit'
-    });
+  if (!hook) { return next(); }
 
-    hook.on('exit', function(code) {
-      if (code) {
-        return callback('Something goes wrong. Hook exited with code: '+ code);
-      }
-
-      callback();
-    });
-
-    try {
-      ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT'].forEach(function(signal) {
-        process.on(signal, function() {
-          if (hook) {
-            hook.kill(signal);
-          }
-
-          process.exit();
-        });
-      });
-    } catch(e) {
-      // callback(e);
-    }
+  var hookProc = spawn(node, [hook], {
+    cwd: root,
+    stdio: 'inherit'
   });
+
+  var done = false;
+  hookProc.on('close', function(code, signal) {
+    done ? process.exit() : next(code, signal);
+  });
+
+  ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT'].forEach(function(signal) {
+    process.on(signal, function() {
+      done = true;
+      hookProc && hookProc.kill(signal);
+    });
+  });
+}
+
+if (process.argv[2] === 'remove') {
+  process.argv[2] = 'uninstall';
 }
 
 App.parse(process.argv);
