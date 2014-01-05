@@ -29,7 +29,8 @@ App.on('--help', function() {
     'module enable <name>              enable module',
     'module disable <name>             disable module',
     'module uninstall|remove           uninstall module',
-    'controller|ctrl <name> [methods]  generate new controller, optional methods list',
+    'controller|ctrl <name> [methods]  generate new controller, optional actions list',
+    'start                             start application cluster',
     eol
   ].join(eol +'    '));
 });
@@ -53,7 +54,7 @@ if (command === 'module') {
   command = 'generate';
 }
 
-if (['create', 'modules', 'generate'].indexOf(command) === -1) {
+if (['create', 'modules', 'generate', 'start'].indexOf(command) === -1) {
   console.error('  Error:'.red, 'Unknown command. Run "katana --help" to list available commands!');
   process.exit(1);
 }
