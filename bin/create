@@ -1,90 +1,70 @@
 #!/usr/bin/env node
 
-var Path     = require('path');
-var Fs       = require('fs');
-var spawn    = require('child_process').spawn;
+var Path = require('path');
+var Fs   = require('fs');
 
-var mod_root = Path.normalize(__dirname + '/../');
-var root     = process.cwd() + Path.sep;
-var eol      = require('os').EOL;
+var async = require('async');
 
-var info = require(mod_root +'package.json');
+var spawn   = require('child_process').spawn;
+var confirm = require('../lib/utils').confirm;
 
-var Async    = require('async');
-var mkdir    = require('mkdirp');
-var copy     = require('../lib/utils').copy;
+var fs     = require('../lib/fs');
+var mkdir  = fs.mkdir;
+var copy   = fs.copy;
+var walk   = fs.walk;
+var find   = fs.find;
+var remove = fs.remove;
+
+var node    = process.execPath;
+var root    = process.cwd() + Path.sep;
+var modRoot = Path.join(__dirname, '..') + Path.sep;
+var eol     = require('os').EOL;
+var sep     = Path.sep;
+
+var version = require('../package').version;
+
+require('colors');
 
 var App = require('commander');
 
-App.version(info.version);
+App.command('create')
+.description('create new katana application')
+.action(function(name) {
+  if (arguments.length < 2) {
+    name = null;
+  }
 
-var Err = function(message) {
-  console.log(eol, message);
+  var path = Path.join(root, name || '');
 
-  process.exit();
-}
+  confirm('  Create app at '+ path.blue +' ? ', function(error, ok) {
+    if (!ok) { return; }
 
-App.command('create [path]')
-.description('create katana application')
-.action(function(path) {
-  path = path ? Path.resolve(root, path) + Path.sep : root;
-
-  App.confirm('Create application at: '+ path +' ? [Yes|No]: ', function(ok) {
-    if (!ok) { process.exit(); }
-
-    Async.series([
-      function(callback) {
-        mkdir(path, 0755, function(error) {
-          callback(error);
-        });
+    // TOOD: check if directory already exists and remove on confirmation?
+    async.series([
+      function(next) {
+        copy(Path.join(__dirname, '..', 'template'), path, next);
       },
-      function(callback) {
-        Fs.readdir(mod_root +'template', function(error, items) {
-          if (error) { return callback(error); }
-
-          var pending = items.length;
-
-          if (!pending) { return callback(); }
-
-          items.forEach(function(item) {
-            copy(mod_root +'template/' + item, path + item, function(error) {
-              if (error) { console.log(error); }
-
-              if (!--pending) {
-                callback();
-              }
-            });
-          });
-        });
-      },
-      function(callback) {
+      function(next) {
         var paths = [
-          path + 'application/config/production', 
-          path + 'application/models',
-          path + 'public/images', 
-          path + 'public/scripts', 
-          path + 'public/css',
-          path + 'modules', 
-          path + 'temp/files'
-        ];
-
-        Async.forEach(paths, function(path, cb) {
-          mkdir(path, 0777, function(error) {
-            if (error) { console.log('Warning:'.magenta, 'could not create directory:', path); }
-
-            cb();
-          })
-        }, function(error) {
-          callback(error);
+          'app/config/production',
+          'app/models',
+          'public/images',
+          'public/scripts',
+          'public/css',
+          'modules',
+          'temp/files'
+        ].map(function(dir) {
+          return Path.join(path, dir);
         });
+
+        async.each(paths, mkdir, next);
       },
-      function(callback) {
+      function(next) {
         var pack = {
-          name: 'katana-app',
+          name: 'app',
           version: '0.0.1',
-          private: true,
           dependencies: {
-            katana: info.version,
+            katana: version,
             joose: '*',
             ejs: '*'
           },
@@ -92,20 +72,17 @@ App.command('create [path]')
             modules: {}
           }
         };
-    
-        Fs.writeFile(path +'package.json', JSON.stringify(pack, null, 2), function(error) {
-          if (error) { console.log('Warning:'.magenta, ' could not write package.json file!'); }
 
-          callback();
-        });
+        Fs.writeFile(Path.join(path, 'package.json'), JSON.stringify(pack, null, 2), next);
       }
-    ], function(error, results) {
-      if (error) { return Err(error); }
+    ], function(error) {
+      if (error) {
+        return console.log(error);
+      }
 
-      console.log('App created! Run "npm install" under app root to install dependencies.');
-
-      process.exit();
-    })
+      console.log('  Done!'.green, 'Your new app is at', path.blue +'.');
+      console.log('  Run', '"npm install"'.blue, 'under app root to install dependencies.');
+    });
   });
 });
 

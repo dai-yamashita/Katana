@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var Path = require('path');
+
+var App = require('../lib/cluster');
+
+var root  = process.cwd() + Path.sep;
+var cores = require('os').cpus().length;
+
+App.start({
+  script: root +'app.js',
+  workers: 2,
+  env: null,
+  args: ['--https', 'false'],
+  workon: 'online',
+  silent: true,
+  signals: true,
+  respawn: true,
+  respawnTimeout: 2000,
+  forceTimeout: 5000,
+  repl: false
+}, function() {
+  console.log('['+ process.pid +']:', 'cluster online with', this.size, 'workers.');
+});

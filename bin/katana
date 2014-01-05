@@ -2,80 +2,78 @@
 
 var Path = require('path');
 
-var mod_root = Path.normalize(__dirname + '/../');
-var root     = process.cwd() + Path.sep;
-var eol      = require('os').EOL;
-
 var spawn = require('child_process').spawn;
+
+var node    = process.execPath;
+var root    = process.cwd() + Path.sep;
+var modRoot = Path.join(__dirname, '..') + Path.sep;
+var eol     = require('os').EOL;
+var sep     = Path.sep;
+
+require('colors');
 
 var App = require('commander');
 
-App.version(require(mod_root + 'package').version);
-App.usage('katana <command> [options]');
+App.version(require('../package').version);
+App.usage('<command> [options]');
 
 App.on('--help', function() {
-  console.log('  Commands:'+ eol);
-  console.log('    create [path]                 - create katana application');
-  console.log('    module                        - list all available modules');
-  console.log('    module install <name> [url]   - install module');
-  console.log('    module update                 - update modules list and info');
-  console.log('    module <str>                  - search modules');
-  console.log('    module enable <name>          - enable module');
-  console.log('    module disable <name>         - disable module');
-  console.log('    module uninstall <name>       - uninstall module'+ eol);
-
-  process.exit();
+  console.log([
+    '  Commands:'+ eol,
+    'new|create|init [path]            create new katana application',
+    'modules                           list available modules',
+    'modules update                    update modules list',
+    'modules search <str>              search modules',
+    'module install <name> [url]       install module',
+    'install <name> [url]              shortcut for "module install"',
+    'module enable <name>              enable module',
+    'module disable <name>             disable module',
+    'module uninstall|remove           uninstall module',
+    'controller|ctrl <name> [methods]  generate new controller, optional actions list',
+    'start                             start application cluster',
+    eol
+  ].join(eol +'    '));
 });
 
 App.parse(process.argv);
 
-var args = process.argv.slice(3);
+!App.args.length && App.help();
 
-var command = App.args[0];
-
-if (!command) {
-  process.stdout.write(App.helpInformation());
-
-  App.emit('--help');
-
-  process.exit();
-}
+var command = App.args.shift();
 
 if (command === 'module') {
   command = 'modules';
+} else if (command === 'install') {
+  App.args.unshift('install');
+  command = 'modules';
+} else if (command==='init' || command==='new') {
+  App.args.unshift('create');
+  command = 'create';
+} else if (command==='controller' || command==='ctrl') {
+  App.args.unshift('controller');
+  command = 'generate';
 }
 
-var commands = ['create', 'modules'];
-
-if (commands.indexOf(command) === -1) {
-  console.log('Error: unknown command. Run --help to list available commands.');
-
-  process.exit();
+if (['create', 'modules', 'generate', 'start'].indexOf(command) === -1) {
+  console.error('  Error:'.red, 'Unknown command. Run "katana --help" to list available commands!');
+  process.exit(1);
 }
 
-if (command === 'create' || (command !== 'create' && !args.length)) {
-  args.unshift(command);
+if (command==='modules' && !App.args.length) {
+  App.args.unshift('list');
 }
 
-var bin = Path.join(mod_root, 'bin', command);
-
-var proc = spawn('node', [bin].concat(args), {
+var proc = spawn(node, [Path.join(modRoot, 'bin', command)].concat(App.args), {
   cwd: root,
   stdio: 'inherit'
 });
 
-try {
-  ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGQUIT'].forEach(function(signal) {
-    process.on(signal, function() {
-      if (proc) {
-        proc.kill(signal);
-      }
+proc.on('close', function(code, signal) {
+  process.exit();
+});
 
-      process.exit();
-    });
+['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGQUIT'].forEach(function(signal) {
+  process.on(signal, function() {
+    proc && proc.kill(signal);
   });
-} catch(e) {}
-
-process.stdin.end(); // possible bug when using stdin.destroy from commander commands callback
-
-App.parse(process.argv);
+});
