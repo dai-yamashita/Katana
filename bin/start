@@ -2,22 +2,40 @@
 
 var Path = require('path');
 
-var App = require('../lib/cluster');
-
 var root  = process.cwd() + Path.sep;
 var cores = require('os').cpus().length;
 
+function bool(str) {
+  return /^y|yes|ok|true$/i.test(str);
+}
+
+var cmd = require('commander');
+
+cmd
+  .option('-w, --workers <workers>', 'Number of workers')
+  .option('-o, --workon <workon>',   'When a worker should be treated as active [online]')
+  .option('-s, --silent [bool]',     'Share or not stdout/stderr [true]', bool)
+  .option('-l, --signals [bool]',    'Listen process signals [true]', bool)
+  .option('-r, --respawn [bool]',    'Respawn died workers [true]', bool)
+  .option('-t, --timeout',           'Timeout before respawn a worker [2000]', parseInt)
+  .option('-f, --force',             'Timeout for worker to gracefull shutdown [5000]', parseInt)
+.parse(process.argv);
+
+var App = require('../lib/cluster');
 App.start({
-  script: root +'app.js',
-  workers: 2,
-  env: null,
-  args: ['--https', 'false'],
-  workon: 'online',
-  silent: true,
-  signals: true,
-  respawn: true,
+  script:  cmd.args[0] || (root +'app.js'),
+  env:     null,
+  args:    [],
+
+  workers: cmd.workers || cores,
+  workon:  cmd.workon || 'online',
+  silent:  cmd.silent!==undefined ? cmd.silent : true,
+  signals: cmd.signals!==undefined ? cmd.signals : true,
+  respawn: cmd.respawn!==undefined ? cmd.respawn : true,
+
   respawnTimeout: 2000,
   forceTimeout: 5000,
+
   repl: false
 }, function() {
   console.log('['+ process.pid +']:', 'cluster online with', this.size, 'workers.');

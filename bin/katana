@@ -63,7 +63,7 @@ if (command==='modules' && !App.args.length) {
   App.args.unshift('list');
 }
 
-var proc = spawn(node, [Path.join(modRoot, 'bin', command)].concat(App.args), {
+var proc = spawn(node, [Path.join(modRoot, 'bin', command)].concat(process.argv.slice(3)), {
   cwd: root,
   stdio: 'inherit'
 });
