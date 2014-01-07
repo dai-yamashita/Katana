@@ -163,7 +163,6 @@ App.command('install <name> [url]')
 .description('install or reinstall application module')
 .action(function(name, url) {
   var ProgressBar = require('progress');
-  var Bar         = null;
   var req         = null;
   var username    = null;
   var version     = null;
@@ -263,16 +262,19 @@ App.command('install <name> [url]')
           return next('Module request failed! Unexpected content type, module must be gzipped tar-ball.');
         }
 
-        Bar = new ProgressBar('               :etas'.blue +' [:bar] ' + ':percent'.green + eol, {
-          complete: '=',
-          incomplete: ' ',
-          width: 40,
-          total: parseInt(response.headers['content-length'], 10)
-        });
+        var length = parseInt(response.headers['content-length'], 10);
+        if (!isNaN(length)) {
+          var Bar = new ProgressBar('               :etas'.blue +' [:bar] ' + ':percent'.green + eol, {
+            complete: '=',
+            incomplete: ' ',
+            width: 40,
+            total: length
+          });
 
-        req.on('data', function(chunk) {
-          Bar.tick(chunk.length);
-        });
+          req.on('data', function(chunk) {
+            Bar.tick(chunk.length);
+          });
+        }
 
         function abort() {
           req.abort();
