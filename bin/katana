@@ -39,18 +39,19 @@ App.parse(process.argv);
 
 !App.args.length && App.help();
 
+var args    = process.argv.slice(3);
 var command = App.args.shift();
 
 if (command === 'module') {
   command = 'modules';
 } else if (command === 'install') {
-  App.args.unshift('install');
+  args.unshift('install');
   command = 'modules';
 } else if (command==='create' || command==='init' || command==='new') {
-  App.args.unshift('create');
+  args.unshift('create');
   command = 'create';
 } else if (command==='controller' || command==='ctrl') {
-  App.args.unshift('controller');
+  args.unshift('controller');
   command = 'generate';
 }
 
@@ -60,10 +61,10 @@ if (['create', 'modules', 'generate', 'start'].indexOf(command) === -1) {
 }
 
 if (command==='modules' && !App.args.length) {
-  App.args.unshift('list');
+  args.unshift('list');
 }
 
-var proc = spawn(node, [Path.join(modRoot, 'bin', command)].concat(process.argv.slice(3)), {
+var proc = spawn(node, [Path.join(modRoot, 'bin', command)].concat(args), {
   cwd: root,
   stdio: 'inherit'
 });
