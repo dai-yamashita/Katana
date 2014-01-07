@@ -46,7 +46,7 @@ if (command === 'module') {
 } else if (command === 'install') {
   App.args.unshift('install');
   command = 'modules';
-} else if (command==='init' || command==='new') {
+} else if (command==='create' || command==='init' || command==='new') {
   App.args.unshift('create');
   command = 'create';
 } else if (command==='controller' || command==='ctrl') {
