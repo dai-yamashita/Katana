@@ -1,7 +1,4 @@
-var Path = require('path');
-var Fs   = require('fs');
-
-var root = process.cwd() + Path.sep;
+var Fs = require('fs');
 
 module.exports = {
   url: 'localhost',
@@ -15,8 +12,8 @@ module.exports = {
   // https: {
   //   host: '127.0.0.1',
   //   port: 1443,
-  //   key:  Fs.readFileSync(root + 'server.key'),
-  //   cert: Fs.readFileSync(root + 'server.crt'),
+  //   key:  Fs.readFileSync(App.root + 'server.key'),
+  //   cert: Fs.readFileSync(App.root + 'server.crt'),
   //   ca:   null
   // },
 
@@ -84,7 +81,7 @@ module.exports = {
 
     maxFields: 1000,
     maxFieldsSize: 2 * 1024 * 1024,
-    uploadDir: Path.join(root, 'temp', 'files'),
+    uploadDir: Path.join(App.root, 'temp', 'files'),
     keepExtensions: false,
     encoding: 'utf-8',
 
