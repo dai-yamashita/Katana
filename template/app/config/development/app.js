@@ -1,4 +1,5 @@
-var Fs = require('fs');
+var Path = require('path');
+var Fs   = require('fs');
 
 module.exports = {
   url: 'localhost',
