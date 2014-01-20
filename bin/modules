@@ -209,6 +209,8 @@ App.command('install <name> [url]')
     url = ['https://github.com', username, repository, 'tarball', version || 'master'].join('/');
   }
 
+  var isFile = false;
+
   async.series([
     function(next) {
       if (!pack.modules[name]) { return next(); }
@@ -296,7 +298,7 @@ App.command('install <name> [url]')
       Fs.readdir(path, function(error, item) {
         if (error || !item.length) { return next(error || 'Extracting failed or module archive empty.'); }
 
-        var isFile = Path.extname(item[0]) === '.js';
+        isFile = Path.extname(item[0]) === '.js';
 
         move(Path.join(path, item[0]), Path.join(root, 'modules', name + (isFile ? '.js' : '')), next);
       });
@@ -328,19 +330,18 @@ App.command('install <name> [url]')
       });
     },
     function(next) {
-      return next();
+      if (isFile) { return next(); }
 
-      var path = Path.join(__dirname, 'modules', 'auth');
+      var Npm = require('npm');
+      var options = {
+        dir: Path.join(root, 'modules', name),
+        loglevel: 'silent'
+      }
 
-      process.chdir(path);
-      require('npm').load(function(error, Npm) {
-        Npm.config.set('logLevel', 'info')
-        .on('log', function(message) {
-          console.log(message);
-        }).install(function(error) {
-          console.log(arguments);
-          process.chdir(root);
-        });
+      Npm.load(options, function(error, npm) {
+        if (error) { return next(error); }
+        
+        npm.commands.install(next);
       });
     },
     function(next) {
