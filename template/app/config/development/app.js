@@ -32,6 +32,16 @@ module.exports = {
   },
 
   favicon: 'public/images/favicon.ico',
+
+  logger: {
+    padLevels: true,
+    transports: {
+      Console: {
+        level: 'debug',
+        colorize: true
+      }
+    }
+  },
   
   view: {
     engine: 'ejs',
