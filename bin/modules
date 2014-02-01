@@ -333,12 +333,7 @@ App.command('install <name> [url]')
       if (isFile) { return next(); }
 
       var Npm = require('npm');
-      var options = {
-        dir: Path.join(root, 'modules', name),
-        loglevel: 'silent'
-      }
-
-      Npm.load(options, function(error, npm) {
+      Npm.load({ prefix: Path.join(root, 'modules', name) }, function(error, npm) {
         if (error) { return next(error); }
         
         npm.commands.install(next);
