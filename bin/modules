@@ -266,10 +266,10 @@ App.command('install <name> [url]')
 
         var length = parseInt(response.headers['content-length'], 10);
         if (!isNaN(length)) {
-          var Bar = new ProgressBar('               :etas'.blue +' [:bar] ' + ':percent'.green + eol, {
+          var Bar = new ProgressBar('               :etas'.blue +' [:bar] ' + ':percent'.green, {
             complete: '=',
             incomplete: ' ',
-            width: 40,
+            width: 30,
             total: length
           });
 
